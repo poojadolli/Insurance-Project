@@ -1,0 +1,23 @@
+h2 {
+    color: aliceblue
+}
+
+.close {
+    font-weight: 700;
+    font-size: 23px;
+    width: 50px;
+    border: none;
+
+}
+
+.btn btn-outline-danger {
+    align-items: left;
+}
+
+.custom-heading {
+    font-size: 30px;
+    font-weight: bold;
+    color: #FF0000;
+    font-family: cursive;
+    text-align: center;
+}

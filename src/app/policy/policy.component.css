@@ -1,0 +1,25 @@
+.container-fluid {
+  background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+  background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 90px;
+    font-family: 'Arial', sans-serif;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+
+}
+
+.calculate-form {
+    background-color: aliceblue;
+    margin-right: 100px;
+    padding: 10px;
+    margin-top: 20px;
+}
+#investAmount::-webkit-inner-spin-button,
+#investAmount::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

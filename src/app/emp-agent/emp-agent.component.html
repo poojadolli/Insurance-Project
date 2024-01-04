@@ -1,0 +1,416 @@
+<app-emp-header></app-emp-header>
+
+    <div class="container-fluid">
+    <div class="col-md-12">
+        <h2><b>Agents</b></h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAgent" type="submit">Add
+            agent</button>&nbsp;
+        <button class="btn btn-danger ms-auto" routerLink="/emp">Back to dashboard</button>
+        <hr>
+      </div>
+
+
+
+<!-- Other pagination elements -->
+
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+    <!-- Other pagination elements -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Agent Id</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Qualification</th>
+                <th scope="col">Status</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let agent of agents">
+                <td>{{agent.agentId}}</td>
+                <td>{{agent.agentFirstName}}</td>
+                <td>{{agent.agentLastName}}</td>
+                <td>{{agent.phoneNumber}}</td>
+                <td>{{agent.email}}</td>
+                <td>{{agent.qualification}}</td>
+                <td>
+                    <p [ngClass]="{'text-success': agent.status, 'text-danger': !agent.status}">
+                        {{ agent.status ? 'Active' : 'Inactive' }}
+                    </p>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#editAgent" (click)="editAgent(agent)">Edit</button>
+                </td>
+               
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="deleteAgent(agent)">Delete
+                    </button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Other pagination elements -->
+
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Other pagination elements -->
+
+
+
+
+</div>
+<div class="modal fade" id="addAgent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Add new agent</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="agentDetail">
+                    
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">First name</label>
+                        <input type="text" class="form-control" formControlName="agentFirstName" id="agentFirstName"
+                            aria-describedby="emailHelp">
+
+
+                        <small
+                            *ngIf="agentDetail.get('agentFirstName')?.dirty && agentDetail.get('agentFirstName')?.hasError('required')"
+                            class="text-danger">
+                            *First name is requried
+                        </small>
+                        <small *ngIf="
+                                   agentDetail.get('agentFirstName')?.dirty &&
+                                   agentDetail
+                                     .get('agentFirstName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("agentFirstName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Last name</label>
+                        <input type="text" class="form-control" formControlName="agentLastName" id="agentLastName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('agentLastName')?.dirty && agentDetail.get('agentLastName')?.hasError('required')"
+                            class="text-danger">
+                            *Last name is requried
+                        </small>
+                        <small *ngIf="
+                                   agentDetail.get('agentLastName')?.dirty &&
+                                   agentDetail
+                                     .get('agentLastName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("agentLastName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="text" class="form-control" formControlName="email" id="email"
+                            aria-describedby="emailHelp">
+
+                        <small *ngIf="agentDetail.get('email')?.dirty && agentDetail.get('email')?.hasError('email')"
+                            class="text-danger">
+                            *Email is requried
+                        </small>
+                    </div>
+
+                    
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Qualification</label>
+                        <input type="text" class="form-control" formControlName="qualification" id="qualification"
+                            aria-describedby="emailHelp">
+
+                        <small
+                            *ngIf="agentDetail.get('qualification')?.dirty && agentDetail.get('qualification')?.hasError('required')"
+                            class="text-danger">
+                            *Qualification is requried
+                        </small>
+                        <small *ngIf="
+                               agentDetail.get('qualification')?.dirty &&
+                               agentDetail
+                                 .get('qualification')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("qualification")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Commission</label>
+                        <input type="text" class="form-control" formControlName="commission" id="commission"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('commission')?.dirty && agentDetail.get('commission')?.hasError('required')"
+                            class="text-danger">
+                            *Commission is requried
+                        </small>
+
+
+                        <small *ngIf="
+                       agentDetail.get('commission')?.dirty &&
+                       agentDetail
+                         .get('commission')
+                         ?.hasError('min')
+                     " class="text-danger"> *{{
+                            agentDetail
+                            .get("commission")
+                            ?.getError("min").message
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Phone</label>
+                        <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('phoneNumber')?.dirty && agentDetail.get('phoneNumber')?.hasError('required')"
+                            class="text-danger">
+                            *PhoneNumber is requried
+                        </small>
+                        <small *ngIf="
+                                   agentDetail.get('phoneNumber')?.dirty &&
+                                   agentDetail
+                                     .get('phoneNumber')
+                                     ?.hasError('phoneValidate')
+                                 " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("phoneNumber")
+                            ?.getError("phoneValidate").message
+                            }}</small>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Username</label>
+                        <input type="text" class="form-control" formControlName="userName" id="userName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('userName')?.dirty && agentDetail.get('userName')?.hasError('required')"
+                            class="text-danger">
+                            *Username is requried
+                        </small>
+                        <small
+                            *ngIf="agentDetail.get('userName')?.dirty && agentDetail.get('userName')?.hasError('passwordValidator')"
+                            class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("userName")
+                            ?.getError("passwordValidator").message
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Password</label>
+                        <input type="text" class="form-control" formControlName="password" id="password"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('password')?.dirty && agentDetail.get('password')?.hasError('required')"
+                            class="text-danger">
+                            *Password is requried
+                        </small>
+                        <small
+                            *ngIf="agentDetail.get('password')?.dirty && agentDetail.get('password')?.hasError('passwordValidator')"
+                            class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("password")
+                            ?.getError("passwordValidator").message
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="addAgent()">Add
+                                agent</button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="editAgent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Edit plan details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="agentDetail">
+                   
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">First name</label>
+                        <input type="text" class="form-control" formControlName="agentFirstName" id="agentFirstName"
+                            aria-describedby="emailHelp">
+
+                        <small
+                            *ngIf="agentDetail.get('agentFirstName')?.dirty && agentDetail.get('agentFirstName')?.hasError('required')"
+                            class="text-danger">
+                            *First name is requried
+                        </small>
+                        <small *ngIf="
+                                   agentDetail.get('agentFirstName')?.dirty &&
+                                   agentDetail
+                                     .get('agentFirstName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("agentFirstName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Last name</label>
+                        <input type="text" class="form-control" formControlName="agentLastName" id="agentLastName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('agentLastName')?.dirty && agentDetail.get('agentLastName')?.hasError('required')"
+                            class="text-danger">
+                            *Last name is requried
+                        </small>
+                        <small *ngIf="
+                                   agentDetail.get('agentLastName')?.dirty &&
+                                   agentDetail
+                                     .get('agentLastName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("agentLastName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Phone</label>
+                        <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('phoneNumber')?.dirty && agentDetail.get('phoneNumber')?.hasError('required')"
+                            class="text-danger">
+                            *phoneNumber is requried
+                        </small>
+                        <small *ngIf="
+                                   agentDetail.get('phoneNumber')?.dirty &&
+                                   agentDetail
+                                     .get('phoneNumber')
+                                     ?.hasError('phoneValidate')
+                                 " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("phoneNumber")
+                            ?.getError("phoneValidate").message
+                            }}</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="text" class="form-control" formControlName="email" id="email"
+                            aria-describedby="emailHelp">
+                        <small *ngIf="agentDetail.get('email')?.dirty && agentDetail.get('email')?.hasError('email')"
+                            class="text-danger">
+                            *Email is requried
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Qualification</label>
+                        <input type="text" class="form-control" formControlName="qualification" id="qualification"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="agentDetail.get('qualification')?.dirty && agentDetail.get('qualification')?.hasError('required')"
+                            class="text-danger">
+                            *Qualification is requried
+                        </small>
+                        <small *ngIf="
+                                 agentDetail.get('qualification')?.dirty &&
+                                 agentDetail
+                                   .get('qualification')
+                                   ?.hasError('onlyCharacters')
+                               " class="text-danger">
+                            *{{
+                            agentDetail
+                            .get("qualification")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                   
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="updateAgent()"
+                                data-bs-dismiss="modal">Update</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

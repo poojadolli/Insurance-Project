@@ -1,0 +1,196 @@
+<app-emp-header></app-emp-header>
+<div class="container-fluid">
+  <div class="col-md-12">
+    <h2><b>Commissions</b></h2>
+
+    <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+
+    <hr>
+  </div>
+
+<!-- Other pagination elements -->
+<table class="table table-hover">
+    <thead>
+        <tr>
+
+            <th scope="col">Commission Id</th>
+            <th scope="col">Agent Id</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+            <th scope="col">More</th>
+            <th scope="col">Action</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let comm of commList">
+            <td>{{comm.commissionId}}</td>
+            <td>{{comm.agentId}}</td>  
+            <td>&#x20B9;{{comm.amount}}</td>
+            <td>{{comm.date|date:'dd-MM-YYYY'}}</td>
+           
+            <td>
+                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                    data-bs-target="#customerDetailsModal" (click)="fetchCustomerDetails(comm.policyNumber)">
+                    Details
+                </button>
+            </td>
+            <td>
+                <div *ngIf="!comm.status">
+                    <button class="btn btn-primary" (click)="updateCommission(comm)">Approve</button>
+                </div>
+                <div *ngIf="comm.status">
+                   <button class=" btn btn-success">Approved</button>
+                </div>
+            </td>
+
+
+            
+        </tr>
+    </tbody>
+</table>
+
+</div>
+
+<div class="modal fade" id="customerDetailsModal" tabindex="-1" role="dialog"
+    aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customerDetailsModalLabel">Policy detail</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="newPolicy">
+
+                    <p><strong>Policy number:</strong> {{ newPolicy.policyNumber }}</p>
+                    <p><strong>Premium amount:</strong> {{ newPolicy.premiumAmount }}</p>
+                    <p><strong>Sum assured:</strong> {{ newPolicy.sumAssured }}</p>
+                    <p><strong>Premium type:</strong> {{ newPolicy.premiumType }}</p>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="commDetailsModal" tabindex="-1" role="dialog" aria-labelledby="commDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commDetailsModalLabel">Commission detail</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="comms">
+                    <p><strong>Commission id:</strong> {{comms.commissionId}}</p>
+                    <p><strong>Amount:</strong> {{comms.amount }}</p>
+                    <p><strong>PolicyNumber:</strong> {{comms.policyNumber }}</p>
+                    <p><strong>date:</strong> {{comms.date }}</p>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editCommission" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Edit new commission</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="commDetail">
+                    
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Agent id</label>
+                        <input type="text" class="form-control" formControlName="agentId" id="agentId"
+                            aria-describedby="emailHelp">
+
+
+                        <small
+                            *ngIf="commDetail.get('agentId')?.dirty && commDetail.get('agentId')?.hasError('required')"
+                            class="text-danger">
+                            *agentId is requried
+                        </small>
+                      
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Amount</label>
+                        <input type="text" class="form-control" formControlName="amount" id="amount"
+                            aria-describedby="emailHelp">
+                        <small *ngIf="commDetail.get('amount')?.dirty && commDetail.get('amount')?.hasError('required')"
+                            class="text-danger">
+                            *amount is requried
+                        </small>
+                        <small *ngIf="
+                                   commDetail.get('amount')?.dirty &&
+                                   commDetail
+                                     .get('amount')
+                                     ?.hasError('min')
+                                 " class="text-danger">
+                            *{{
+                            commDetail
+                            .get("amount")
+                            ?.getError("min").message
+                            }}</small>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Date</label>
+                        <input type="text" class="form-control" formControlName="date" id="date"
+                            aria-describedby="emailHelp">
+
+
+                        <small *ngIf="commDetail.get('date')?.dirty && commDetail.get('date')?.hasError('required')"
+                            class="text-danger">
+                            *Date is requried
+                        </small>
+                    </div>
+                  
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Policy number</label>
+                        <input type="text" class="form-control" formControlName="policyNumber" id="policyNumber"
+                            aria-describedby="emailHelp">
+
+                        <small
+                            *ngIf="commDetail.get('policyNumber')?.dirty && commDetail.get('policyNumber')?.hasError('required')"
+                            class="text-danger">
+                            *policyNumber is requried
+                        </small>
+                        <small *ngIf="
+                               commDetail.get('policyNumber')?.dirty &&
+                               commDetail
+                                 .get('policyNumber')
+                                 ?.hasError('min')
+                             " class="text-danger">
+                            *{{
+                            commDetail
+                            .get("policyNumber")
+                            ?.getError("min").message
+                            }}</small>
+                    </div>
+                    
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>

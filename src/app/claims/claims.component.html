@@ -1,0 +1,249 @@
+<app-customer-header></app-customer-header>
+
+<div class="container-fluid">
+
+<div class="col-md-12">
+    <h2><b>Claims</b></h2>
+    <button class="btn btn-danger ms-auto" routerLink="/customer">Back to dashboard</button>
+    <hr>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page Size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Claim Id </th>
+                <th scope="col">Account number </th>
+                <th scope="col">IFSC code </th>
+                <th scope="col">Date</th>
+                <th scope="col">Amount</th>
+                <th scope="col">More</th>
+                <th scope="col" colspan="2">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let calim of calimList">
+                <td>{{calim.calimId}}</td>
+                <td>{{calim.bankAccountNumber}}</td>
+                <td>{{calim.ifScCode}}</td>
+                <td>{{calim.date|date:'dd-MM-YYYY'}}</td>
+                <td>&#x20B9;{{calim.claimAmount}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#policyDetailsModal" (click)="fetchPolicyDetails(calim.policyNumber)">
+                        Details
+                    </button>
+                </td>
+                <td>
+                    <div *ngIf="!calim.status">
+                        <p (click)="updateCustomerStatus(calim)" style="color: red;">Pending</p>
+                        
+                    </div>
+                    <div *ngIf="calim.status" style="color: green;">
+                    Approved
+                    </div>
+                </td>
+                <td>
+                       </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</div>
+<div class="modal fade" id="addClaim" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Add Calim</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="claimDetail">
+                    
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Policy Description</label>
+                        <input type="text" class="form-control" formControlName="policy" id="policy"
+                            aria-describedby="emailHelp">
+
+
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">ClaimAmount</label>
+                        <input type="text" class="form-control" formControlName="claimAmount" id="claimAmount"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="claimDetail.get('claimAmount')?.dirty && claimDetail.get('claimAmount')?.hasError('required')"
+                            class="text-danger">
+                            *Claim Amount is requried
+                        </small>
+                        <small *ngIf="
+                            claimDetail.get('claimAmount')?.dirty &&
+                               claimDetail
+                                 .get('claimAmount')
+                                 ?.hasError('min')
+                             " class="text-danger">
+                            *{{
+                            claimDetail
+                            .get("claimAmount")
+                            ?.getError("min").message
+                            }}</small>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">BankAccountNumber</label>
+                        <input type="text" class="form-control" formControlName="bankAccountNumber"
+                            id="bankAccountNumber" aria-describedby="emailHelp">
+                        <small
+                            *ngIf="claimDetail.get('bankAccountNumber')?.dirty && claimDetail.get('bankAccountNumber')?.hasError('required')"
+                            class="text-danger">
+                            *AccountNumber is requried
+                        </small>
+                        <small *ngIf="
+                            claimDetail.get('bankAccountNumber')?.dirty &&
+                               claimDetail
+                                 .get('bankAccountNumber')
+                                 ?.hasError('min')
+                             " class="text-danger">
+                            *{{
+                            claimDetail
+                            .get("bankAccountNumber")
+                            ?.getError("min").message
+                            }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Date</label>
+                        <input type="date" class="form-control" formControlName="date" id="date"
+                            aria-describedby="emailHelp">
+                        <small *ngIf="claimDetail.get('date')?.dirty && claimDetail.get('date')?.hasError('required')"
+                            class="text-danger">
+                            *Date is requried
+                        </small>
+
+                    </div>
+                   
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">PolicyNumber</label>
+                        <input type="text" class="form-control" formControlName="policyNumber" id="policyNumber"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="claimDetail.get('policyNumber')?.dirty && claimDetail.get('policyNumber')?.hasError('required')"
+                            class="text-danger">
+                            *PolicyNumber is requried
+                        </small>
+                        <small *ngIf="
+                        claimDetail.get('policyNumber')?.dirty &&
+                           claimDetail
+                             .get('policyNumber')
+                             ?.hasError('min')
+                         " class="text-danger">
+                            *{{
+                            claimDetail
+                            .get("policyNumber")
+                            ?.getError("min").message
+                            }}</small>
+
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">IfScCode</label>
+                        <input type="text" class="form-control" formControlName="ifScCode" id="ifScCode"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="claimDetail.get('ifScCode')?.dirty && claimDetail.get('ifScCode')?.hasError('required')"
+                            class="text-danger">
+                            *IfscCode is requried
+                        </small>
+                        <small *ngIf="
+                        claimDetail.get('ifScCode')?.dirty &&
+                           claimDetail
+                             .get('ifScCode')
+                             ?.hasError('min')
+                         " class="text-danger">
+                            *{{
+                            claimDetail
+                            .get("bankAccountNumber")
+                            ?.getError("min").message
+                            }}</small>
+
+
+                    </div>
+
+
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="addClaim()">Apply Claim
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="policyDetailsModal" tabindex="-1" role="dialog" aria-labelledby="policyDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="policyDetailsModalLabel">Policy Details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="policy">
+
+                    <p><strong>Policy number:</strong> {{policy.policyNumber}}</p>
+                    <p><strong>Premium amount:</strong> {{policy.premiumAmount}}</p>
+                    <p><strong>Sum assured:</strong> {{policy.sumAssured}}</p>
+                    <p><strong>Premium type:</strong> {{policy.premiumType}}</p>
+                  
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

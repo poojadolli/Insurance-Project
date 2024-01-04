@@ -1,0 +1,83 @@
+<app-agent-header></app-agent-header>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h2><b>Commissions</b></h2>
+       
+            <button class="btn btn-danger ms-auto" routerLink="/agent">Back to dashboard</button>
+
+        <hr>
+      </div>
+     
+<!-- Other pagination elements -->
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Commission Id</th>
+            <th scope="col">Agent Id</th>
+
+            <th scope="col">Date</th>
+
+            <th scope="col">More</th>
+            
+
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let comm of commList">
+            <td>{{comm.commissionId}}</td>
+            <td>{{comm.agentId}}</td>
+            <td>{{comm.date|date:'dd-MM-YYYY'}}</td>
+
+            <td>
+                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                    data-bs-target="#policyDetailsModal" (click)="fetchPolicyDetails(comm.policyNumber)">
+                    Details
+                </button>
+            </td>
+            <td>&#x20B9;{{comm.amount}}</td>
+            <td>
+                <div *ngIf="!comm.status">
+                    <p style="color: red;">Pending</p>
+                </div>
+                <div *ngIf="comm.status">
+                    <p style="color:green;">Approved</p>
+                </div>
+            </td>
+           
+
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="policyDetailsModal" tabindex="-1" role="dialog" aria-labelledby="policyDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="policyDetailsModalLabel">Policy details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="policy">
+
+                    <p><strong>Policy number:</strong> {{policy.policyNumber}}</p>
+                    <p><strong>Issue date:</strong> {{policy.issueDate|date:'dd-MM-YYYY'}}</p>
+                    <p><strong>Maturity date:</strong>{{policy.maturityDate|date:'dd-MM-YYYY'}}</p>
+                    <p><strong>Premium amount:</strong> {{policy.premiumAmount}}</p>
+                    <p><strong>Sum assured:</strong> {{policy.sumAssured}}</p>
+                    <p><strong>Premium type:</strong> {{policy.premiumType}}</p>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

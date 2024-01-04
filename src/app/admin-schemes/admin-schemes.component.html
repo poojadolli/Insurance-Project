@@ -1,0 +1,171 @@
+
+
+<div class="container-fulid">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+
+            <a class="navbar-brand custom-heading text-center ms-auto order-0" href="#">Schemes</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addScheme" type="submit">Add
+                    Schemes</button>
+
+                <button class="btn btn-danger ms-auto" routerLink="/admin">Back to DashBoard</button>
+            </div>
+        </div>
+    </nav>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">SchemeId</th>
+                <th scope="col">SchemeName</th>
+                <th scope="col">Status</th>
+                <th scope="col">Scheme-Details</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let scheme of schemeList.schemes">
+                <td>{{scheme.schemeId}}</td>
+                <td>{{scheme.schemeName}}</td>
+                <td>{{scheme.status}}</td>
+                <td><button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#viewDetail" (click)="getDetails(scheme)">More Details</button></td>
+               
+            </tr>
+        </tbody>
+    </table>
+    <div class="modal fade" id="addScheme" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: antiquewhite;">
+
+                    <h3 class="modal-title fs-5" id="exampleModalLabel">Add New Scheme</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="schemeDetail">
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Scheme Name</label>
+                            <input type="text" class="form-control" formControlName="schemeName" id="schemeName"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="schemeDetails.get('schemeName')?.dirty && schemeDetails.get('schemeName')?.hasError('required')"
+                                class="text-danger">
+                                *SchemeName is requried
+                            </small>
+                            <small *ngIf="
+            schemeDetails.get('schemeName')?.dirty &&
+            schemeDetails
+              .get('schemeName')
+              ?.hasError('onlyCharacters')
+          " class="text-danger">
+                                *{{
+                                schemeDetails
+                                .get("schemeName")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+
+
+                        </div>
+
+
+        
+                        <div class="mb-3">
+                            <div class="modal-footer" style="background-color: antiquewhite;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-success" (click)="addScheme()">Add
+                                    Scheme</button>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--  view  sceme detail-->
+    <div class="modal fade" id="viewDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: antiquewhite;">
+                    <h3 class="modal-title fs-5" id="exampleModalLabel">Scheme Details: {{selectedSchemeName}}</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <div *ngIf="schemeDetails">
+                        <table>
+                            <!-- Check if schemeDetails and description are available -->
+                            <tr *ngIf="schemeDetails.description">
+
+                            <tr>
+                                <td>Description: </td>
+                                <td> {{schemeDetails.description}}</td>
+                            </tr>
+                            <tr>
+                                <td>Minimum Amount: </td>
+                                <td>{{schemeDetails.minimumAmount}}</td>
+                            </tr>
+                            <tr>
+                                <td>Maximum Amount: </td>
+                                <td>{{schemeDetails.maximumAmount}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Minimum InvestTime: </td>
+                                <td>{{schemeDetails.minimumInvestTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>Maximum InvestTime: </td>
+                                <td>{{schemeDetails.maximumInvestTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>Minimum Age: </td>
+                                <td>{{schemeDetails.minimumAge}}</td>
+                            </tr>
+                            <tr>
+                                <td>Maximum Age: </td>
+                                <td>{{schemeDetails.maximumAge}}</td>
+                            </tr>
+                            <tr>
+                                <td>Profit Ratio: </td>
+                                <td>{{schemeDetails.profitRatio}}</td>
+                            </tr>
+                            <tr>
+                                <td>Registration Commission Ratio: </td>
+                                <td>{{schemeDetails.registrationCommRatio}}</td>
+                            </tr>
+                            <tr>
+                                <td>Installment Commission Ratio: </td>
+                                <td>{{schemeDetails.installmentCommRatio}}</td>
+                            </tr>
+                            <!-- Add similar checks for other properties -->
+                        </table>
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="mb-3">
+                        <div class="modal-footer" style="background-color: antiquewhite;">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                data-bs-target="#viewCalculate">Calculate</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

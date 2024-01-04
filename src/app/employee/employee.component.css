@@ -1,0 +1,135 @@
+/* body {
+    margin-top: 20px;
+    background: #FAFAFA;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+} */
+.up{
+    margin-top:60px ;
+}
+.container {
+    margin-left: 200px;
+    margin-top:70px ;
+    
+}
+h6{
+    
+    font-size: large;
+    font-weight:bolder;
+}
+.navbar {
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: large;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+
+
+
+.content {
+    padding-top: 60px;
+    /* Adjust this value to match your header height */
+}
+
+.h1 {
+    font-family: 'Courier New', Courier, monospace
+}
+
+.navbar-brand,
+.nav-link {
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item .dropdown-menu .dropdown-item {
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .dropdown-toggle {
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+    font-weight: bold;
+}
+
+.logout {
+    display: block;
+    justify-content: center;
+    margin-top: 20px;
+    /* Adjust as needed */
+}
+
+
+p {
+    text-align: center;
+    text-transform: uppercase;
+    /* Convert to uppercase */
+    font-weight: bold;
+    /* Bold text */
+    font-size: 1.8em;
+    /* Medium size */
+}
+
+.order-card {
+    color: #fff;
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg, #4099ff, #73b4ff);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg, #FFB64D, #ffcb80);
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg, #FF5370, #ff869a);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg, #70f2a4, #bae6bd);
+}
+.bg-c-purple{
+    background: linear-gradient(45deg, #f270f0, #e6bae4 );
+}
+.bg-c-grey{
+    background: linear-gradient(45deg,  #4e4e4d, #9fa09f);
+}
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    border: none;
+    margin-bottom: 30px;
+    margin-left: 60px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}

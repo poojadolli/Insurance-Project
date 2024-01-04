@@ -1,0 +1,94 @@
+<app-customer-header></app-customer-header>
+<div class="container-fluid">
+    <div class="col-md-12">
+       <h2><b>Insurance Plans</b></h2> 
+        <button class="btn btn-danger ms-auto" routerLink="/customer">Back to dashboard</button><hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="pagination-controls ms-4 mb-3 pt-3">
+              <!-- Other pagination elements -->
+              <label for="pageSizeSelect">Page Size:</label>
+              <select
+                id="pageSizeSelect"
+                class="form-control"
+                (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+              </select>
+              <div class="search-container">
+              <input
+                type="text"
+                class="form-control search"
+                id="searchQuery"
+                [(ngModel)]="searchQuery"
+                (keyup)="onSearch()"
+                placeholder= "Search"
+              />
+              
+            </div>
+            </div>
+          </div>
+        <!-- Other pagination elements -->
+    
+       
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Plan Id</th>
+                    <th scope="col">Plan name</th>
+           
+                    <th scope="col" colspan="2">Schemes</th>
+    
+    
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let plan of planList">
+                    <td>{{plan.planId}}</td>
+                    <td>{{plan.planName}}</td>
+    
+                            <td><button type="button" class="btn btn-success me-2" data-bs-toggle="modal"
+                                data-bs-target="#viewScheme" (click)="getPlanById(plan)">View scheme</button></td>
+                        <td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+        <!-- Other pagination elements -->
+        <div>
+            <nav aria-label="Page navigation example ">
+              <ul class="pagination justify-content-center">
+                <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                  <a
+                    class="page-link"
+                    (click)="changePage(currentPage-1)"
+                    aria-label="Previous"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                  <a
+                    class="page-link"
+                    [ngClass]="{ active: currentPage === page }"
+                    (click)="changePage(page)"
+                    >{{ page }}</a
+                  >
+                </li>
+                <li
+                  class="page-item text-center ms-1"
+                  *ngIf="currentPage < pageNumbers.length"
+                >
+                  <a
+                    class="page-link"
+                    (click)="changePage(currentPage + 1)"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>  
+
+        </div>

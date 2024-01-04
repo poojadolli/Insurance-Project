@@ -1,0 +1,112 @@
+<app-customer-header></app-customer-header>
+<div class="container-fluid">
+
+<div class="col-md-12">
+   <h2><b>Documents</b></h2>
+    <button class="btn btn-danger ms-auto" routerLink="/customer">Back to dashboard</button>
+    <hr>
+</div>
+
+
+
+    <div class="container">
+        <div class=" row">
+
+            <div class="col-md-4 col-xl-3">
+            
+                <div class="card bg-c-yellow order-card">
+                    <div class="card-block">
+                        <h5 class="m-b-20"> <b>Aadhar card</b></h5>
+                        <input type="file" #fileInput style="display: none" (change)="onFileSelected(fileInput.files)"
+                            accept=".pdf" />
+                        <button class="btn btn-primary text-white" (click)="fileInput.click()">Select file
+                        </button><br>
+                        <button class="btn btn-success" (click)="uploadDocument()">Upload PDF</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xl-3">
+                <div class="card bg-c-yellow order-card">
+                    <div class="card-block">
+                        <h5 class="m-b-20"><b>PAN card</b></h5>
+                        <input type="file" #fileInput style="display: none" (change)="onFileSelected(fileInput.files)"
+                            accept=".pdf" />
+                        <button class="btn btn-primary text-white" (click)="fileInput.click()">Select file</button>
+                        <button class="btn btn-success" (click)="uploadDocument()">Upload PDF</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xl-3">
+                <div class="card bg-c-yellow order-card">
+                    <div class="card-block">
+                        <h5 class="m-b-20"><b>Voter Id card</b></h5>
+                        <input type="file" #fileInput style="display: none" (change)="onFileSelected(fileInput.files)"
+                            accept=".pdf" />
+                        <button class="btn btn-primary text-white" (click)="fileInput.click()">Select file</button>
+
+
+
+                        <button class="btn btn-success" (click)="uploadDocument()">Upload PDF</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+
+            </div>
+            
+        </div>
+        <table id="employeeTable" class="table table-light table-responsive-md table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Sr.</th>
+                    <th scope="col">Document name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let doc of documents; let i = index">
+                    <td>
+                        {{ calculateSRNumber(i) }}
+                    </td>
+                    <td>
+                        {{doc.documentName}}
+                    </td>
+                    <td>
+                        <div *ngIf="!doc.status" class="text-danger">
+                            Pending
+                        </div>
+                        <div *ngIf="doc.status" class="text-success">
+                            Approved
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" (click)="downloadDocument(doc)">Download</button>
+                    </td>
+
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination justify-content-center">
+                <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                    <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                    <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                        }}</a>
+                </li>
+                <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                    <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

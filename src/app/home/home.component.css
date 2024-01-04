@@ -1,0 +1,103 @@
+/*
+ * Footer Styles
+ */
+.site-footer {
+    border-top: 1px solid #ccc;
+    padding-top: 50px;
+}
+
+.site-footer .widget-area {
+    margin-bottom: 50px;
+}
+
+.site-footer .widget-area .widget {
+    font-size: 14px;
+    font-size: 0.875em;
+    margin-bottom: 30px;
+}
+
+.site-footer .widget-area .widget-title {
+    font-size: 20px;
+    font-size: 1.25rem;
+}
+
+.site-footer .widget-area a {
+    color: #768089;
+}
+
+.site-footer .widget-area ul {
+    list-style-type: none;
+}
+
+.site-footer .bottom-footer {
+    background-color: #4a4c4e;
+    text-align: center;
+    padding: 30px 0;
+    font-size: 14px;
+    font-size: 0.875em;
+}
+
+.site-footer .footer-navigation {
+    margin-bottom: 30px;
+}
+
+.site-footer .footer-navigation a {
+    color: white;
+    padding: 0 10px;
+    border-right: 1px solid white;
+    line-height: 20px;
+}
+
+.site-footer .footer-navigation a:last-child {
+    border-right: none;
+}
+
+.site-footer .colophon {
+    color: #898b8d;
+}
+
+.fullwidth-block {
+    padding: 50px 0;
+}
+
+.section-title,
+.section-subtitle {
+    font-weight: 300;
+    margin-bottom: 50px;
+    text-align: center;
+    display: block;
+}
+
+.section-title {
+    font-size: 48px;
+    font-size: 3em;
+}
+
+.section-subtitle {
+    font-size: 30px;
+    font-size: 1.875em;
+    color: #9ba1a6;
+    margin-top: -50px;
+    margin-bottom: 50px;
+}
+
+.feature .feature-title {
+    font-size: 20px;
+    font-size: 1.25em;
+    margin-bottom: 20px;
+    color: #0f75bd;
+    font-weight: 400;
+}
+
+.feature {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.feature i {
+    font-size: 48px;
+    font-size: 3em;
+    color: #0f75bd;
+    display: inline-block;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,251 @@
+<app-agent-header></app-agent-header>
+<div class="container-fluid">
+    <div class=" container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Calculate your premium</b></h3>
+                <br>
+                <div class="calculate-form">
+                    <form [formGroup]="premiumCalculateForm" name="premiumCalculateForm">
+                        <div class="col-md-12 mt-2">
+                            <select class="menu" class="form-control " name="premium Type" id=""
+                                formControlName="premiumMode">
+
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quaterly">Quaterly</option>
+                                <option value="Yearly">Yearly</option>
+                                <option value="Half Yearly">Half yearly</option>
+                            </select>
+                            <small *ngIf="
+                      premiumCalculateForm.get('premiumMode')?.dirty &&
+                      premiumCalculateForm.get('premiumMode')?.hasError('required')
+                      " class="text-danger">*required</small>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <input type="number" class="form-control " formControlName="term" required
+                                placeholder="Enter investment time" min="0" />
+                            <small *ngIf="
+                      premiumCalculateForm.get('term')?.dirty &&
+                      premiumCalculateForm.get('term')?.hasError('required')
+                      " class="text-danger">*required</small>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <input id="amountField" class="form-control " type="number" formControlName="sumAssured"
+                                required placeholder="Enter investment amount" min="0" />
+                            <small *ngIf="
+                      premiumCalculateForm.get('sumAssured')?.dirty &&
+                      premiumCalculateForm.get('sumAssured')?.hasError('required')
+                      " class="text-danger">*required</small>
+                            <small *ngIf="
+                      premiumCalculateForm.get('sumAssured')?.dirty &&
+                      premiumCalculateForm.get('sumAssured')?.hasError('min')
+                      " class="text-danger">*Invalid</small>
+                        </div>
+                        <div class="col-12 mt-2"><br>
+                            <button type="submit" class="btn btn-primary" (click)="calculatePremium()">
+                                Calculate
+                            </button>
+
+                        </div>
+                    </form>
+                    <br>
+                    <div class="result" *ngIf="isDisabled">
+                        <h6>Premium amount: {{ this.premium }}</h6>
+                        <h6>Total premium: {{ totalPremiumEMI }}</h6>
+                        <h6>Maturity amount: {{ MaturityAmount }}</h6>
+                        <div class="col-12 mt-2 me-5">
+                            <br>
+                            <button class="btn btn-success" (click)="confirmDetail()">
+                                Buy policy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" *ngIf="isCalculated">
+                <h4><b>Confirm Details</b></h4>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table">
+                                <tbody>
+                                
+                                    <tr>
+                                        <td>Premium mode</td>
+                                        <td>{{ policy.premiumType }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Issue date</td>
+                                        <td>{{ policy.issueDate | date : "dd-MM-YYYY" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Maturity date</td>
+                                        <td>{{ policy.maturityDate | date : "dd-MM-YYYY" }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Premium</td>
+                                        <td>{{ policy.premiumAmount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sum assured</td>
+                                        <td>{{ policy.sumAssured }}</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>Customer code</td>
+                                        <td>
+                                            <input class="table-input" type="number" [(ngModel)]="policy.customerID" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agent code</td>
+                                        <td>
+                                            <input class="table-input" type="number" [(ngModel)]="policy.agentId" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-4 mt-2">
+                                    <button id="button" class="btn btn-success me-4 "
+                                        (click)="applyPolicy()">Makepayment</button>
+                                </div>
+                                <div class="col-4 mt-2">
+                                    <button id="button" class="btn btn-danger ms-4" (click)="onCancel()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <h4>Enter payment detail</h4>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td>Premium:</td>
+                            <td>&#x20B9;{{ policy.premiumAmount }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Total amount:</td>
+                            <td>&#x20B9;{{policy.sumAssured}}</td>
+
+                        </tr>
+                        <hr />
+                        <tr>
+                            <td>Enter card details:</td>
+                        </tr>
+                    </table>
+
+                    <form [formGroup]="payPremiumForm">
+                        <div class="row">
+                            <div class="col">Payment type*</div>
+                            <div class="col">
+                                <select formControlName="paymentType">
+                                    <option value="Debit Card">Debit card</option>
+                                    <option value="Credit Card">Credit card</option>
+                                </select>
+                                <small *ngIf="
+                    payPremiumForm.get('paymentType')?.dirty &&
+                    payPremiumForm.get('paymentType')?.hasError('required')
+                    " class="text-danger">*required</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col label">Card holder name*</div>
+                            <div class="col">
+                                <input type="text" class="input" formControlName="cardHolderName" />
+                                <small *ngIf="
+                    payPremiumForm.get('cardHolderName')?.dirty &&
+                    payPremiumForm.get('cardHolderName')?.hasError('required')
+                    " class="text-danger">*required</small>
+                                <small *ngIf="
+                  payPremiumForm.get('cardHolderName')?.dirty &&
+                  payPremiumForm
+                      .get('cardHolderName')
+                      ?.hasError('onlyCharacters')
+                  " class="text-danger">
+                                    <br> *{{
+                                    payPremiumForm
+                                    .get("cardHolderName")
+                                    ?.getError("onlyCharacters").message
+                                    }}</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col label">Card number*</div>
+                            <div class="col">
+                                <input type="number" class="input" formControlName="cardNumber" />
+                                <small *ngIf="
+                    payPremiumForm.get('cardNumber')?.dirty &&
+                    payPremiumForm.get('cardNumber')?.hasError('pattern')
+                    " class="text-danger">*Invalid</small>
+                                <small *ngIf="
+                          payPremiumForm.get('cardNumber')?.dirty &&
+                          payPremiumForm.get('cardNumber')?.hasError('required')
+                          " class="text-danger">*required</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col label">CVV*</div>
+                            <div class="col">
+                                <input type="number" class="input" formControlName="cvvNo" />
+                                <small *ngIf="
+                    payPremiumForm.get('cvvNo')?.dirty &&
+                    payPremiumForm.get('cvvNo')?.hasError('required')
+                    " class="text-danger">*required</small>
+                                <small *ngIf="
+                  payPremiumForm.get('cvvNo')?.dirty &&
+                  payPremiumForm.get('cvvNo')?.hasError('pattern')
+                  " class="text-danger">*Invalid</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col label">Expiry date*</div>
+                            <div class="col">
+                                <input type="date" class="input" formControlName="expiryDate" [min]="minDate" />
+                                <small *ngIf="
+                    payPremiumForm.get('expiryDate')?.dirty &&
+                    payPremiumForm.get('expiryDate')?.hasError('required')
+                    " class="text-danger">*required</small>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">
+                            Cancel
+                        </button>
+                        <button id="save" type="button" class="btn btn-primary" (click)="payPremium()">
+                            Pay
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

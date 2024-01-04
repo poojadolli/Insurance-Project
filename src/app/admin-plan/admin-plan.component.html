@@ -1,0 +1,176 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h2><b>Plans</b></h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPlan" type="submit">Add
+            plan</button> &nbsp;
+        <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+    
+        <hr>
+      </div>
+
+<!-- Other pagination elements -->
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+    <!-- Other pagination elements -->
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Plan Id</th>
+                <th scope="col">Plan name</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let plan of planList">
+                <td>{{plan.planId}}</td>
+                <td>{{plan.planName}}</td>
+              
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPlan"
+                        (click)="editPlan(plan)">Edit</button>
+                </td>
+                <td> <button type="button" class="btn btn-danger" (click)="deletePlan(plan)">Delete</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Other pagination elements -->
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- Other pagination elements -->
+</div>
+<!-- ADD PLan -->
+<div class="modal fade" id="addPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Add new insurance plan</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="planDetail">
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Plan name</label>
+                        <input type="text" class="form-control" formControlName="planName" id="planName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="planDetail.get('planName')?.dirty && planDetail.get('planName')?.hasError('required')"
+                            class="text-danger">
+                            *Plan name is requried
+                        </small>
+                        <small *ngIf="
+                                   planDetail.get('planName')?.dirty &&
+                                   planDetail
+                                     .get('planName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger"> *{{
+
+                            planDetail.get("planName")
+                            ?.getError("onlyCharacters").message
+                            }}
+                        </small>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="onSubmit()">Add
+                                plan</button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- edit plan -->
+<div class="modal fade" id="editPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Edit plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="planDetail">
+                  
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Plan name</label>
+                        <input type="text" class="form-control" formControlName="planName" id="planName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="planDetail.get('planName')?.dirty && planDetail.get('planName')?.hasError('required')"
+                            class="text-danger">
+                            *Plan name is requried
+                        </small>
+                        <small *ngIf="
+                                   planDetail.get('planName')?.dirty &&
+                                   planDetail
+                                     .get('planName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger"> *{{
+
+                            planDetail.get("planName")
+                            ?.getError("onlyCharacters").message
+                            }}
+                        </small>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="onUpdateSubmit()"
+                                data-bs-dismiss="modal">Update plan</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

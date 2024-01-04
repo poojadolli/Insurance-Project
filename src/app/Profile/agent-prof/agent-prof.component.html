@@ -1,0 +1,207 @@
+<app-agent-header></app-agent-header>
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-md-5  container mx-auto" id="password-container">
+
+            <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+                <h5>Change Password</h5>
+                <div> -->
+<!-- <label for="NewUsername" class="form-label"> Username:</label> -->
+<!-- <input type="text" id="username" formControlName="username" placeholder="Username">
+                    <small
+                        *ngIf="passwordForm.get('username')?.dirty && passwordForm.get('username')?.hasError('required')"
+                        class="text-danger">
+                        *username is requried
+                    </small>
+                </div>
+                <div> -->
+<!-- <label for="oldPassword" class="form-label">Old Password:</label> -->
+<!-- <input type="password" id="oldPassword" formControlName="oldPassword" placeholder="oldPassword">
+                    <small
+                        *ngIf="passwordForm.get('oldPassword')?.dirty && passwordForm.get('oldPassword')?.hasError('required')"
+                        class="text-danger">
+                        *OldPassword is requried
+                    </small>
+                </div>
+                <div>
+                    <label for="newPassword" class="form-label">New Password:</label>
+                    <input type="password" id="newPassword" formControlName="newPassword" placeholder="newPassword">
+                    <small
+                        *ngIf="passwordForm.get('newPassword')?.dirty && passwordForm.get('newPassword')?.hasError('required')" -->
+<!-- class="text-danger">
+                        *NewPassword is requried
+                    </small>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <button type="submit" [disabled]="!passwordForm.valid">Update Password</button>
+                </div>
+            </form>
+
+        </div> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Update Form</title>
+    <style>
+        body {
+            background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+
+            /* background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            padding: 90px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+            margin-left: 70px;
+            margin-right: 70px;
+
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .text-danger {
+            color: red;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- <h2>Password Update Form</h2> -->
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+            <div>
+                <label for="userName" class="form-label">Username:</label>
+                <input type="text" id="userName" formControlName="userName">
+            </div>
+            <div>
+                <label for="oldPassword" class="form-label">Old Password:</label>
+                <input type="password" id="oldPassword" formControlName="oldPassword">
+            </div>
+            <div>
+                <label for="newPassword" class="form-label">New Password:</label>
+                <input type="password" id="newPassword" formControlName="newPassword">
+            </div>
+            <button type="submit" [disabled]="!passwordForm.valid">Update Password</button>
+            <button class="btn btn-primary " routerLink="/agent">Back to DashBoard</button>
+
+        </form>
+    </div>
+
+    <div class="container">
+
+
+        <table class="table table-responsive-md">
+            <td colspan="2">
+                <h5 class="form-header"><b>Profile Update</b></h5>
+            </td>
+            <tbody>
+                <tr>
+                    <td>First Name</td>
+
+                    <td>
+                        {{ agentProfile.agentFirstName }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>{{ agentProfile.agentLastName }}</td>
+                </tr>
+
+                <tr>
+                    <td>Qualification</td>
+                    <td>
+                        {{agentProfile.qualification }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile No</td>
+                    <td>
+                        <div *ngIf="!isEdit">{{ agentProfile.phoneNumber }}</div>
+                        <div *ngIf="isEdit">
+                            <input class="table-input" type="string" [(ngModel)]="agentProfile.phoneNumber" />
+                            <span class="text-danger" *ngIf="validateField(agentProfile.phoneNumber)">*required</span>
+                            <span class="text-danger" *ngIf="validatePhone(agentProfile.phoneNumber)">*Invalid</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <div *ngIf="!isEdit">{{ agentProfile.email }}</div>
+                        <div *ngIf="isEdit">
+                            <input class="table-input" type="email" [(ngModel)]="agentProfile.email" />
+                            <span class="text-danger" *ngIf="validateField(agentProfile.email)">*required</span>
+                            <span class="text-danger" *ngIf="validateEmail(agentProfile.email)">*Invalid</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <div *ngIf="!isEdit" class="col-12 mt-2">
+                <button class="submit" (click)="onEdit()">Edit Profile</button>
+            </div>
+
+            <div *ngIf="isEdit" class="col-12 mt-2">
+                <button class="submit" (click)="updateProfile()">Update Profile</button>
+            </div>
+        </table>
+    </div>
+</body>
+
+</html>
+

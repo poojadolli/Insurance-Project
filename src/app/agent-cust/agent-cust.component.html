@@ -1,0 +1,433 @@
+<app-agent-header></app-agent-header>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h2><b>Customers</b></h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomer" type="submit">Add
+            customer</button>&nbsp;
+
+        <button class="btn btn-danger ms-auto" routerLink="/agent">Back to dashboard</button>
+
+        <hr>
+    </div>
+    <!-- Other pagination elements -->
+    <div class="container">
+        <div class="row">
+            <div class="pagination-controls ms-4 mb-3 pt-3">
+                <!-- Other pagination elements -->
+                <label for="pageSizeSelect">Page size:</label>
+                <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                    <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+                </select>
+                <div class="search-container">
+                    <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                        (keyup)="onSearch()" placeholder="Search" />
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Customer Id</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">State</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cust of custList">
+                    <td>{{cust.custId}}</td>
+                    <td>{{cust.custFirstName}}</td>
+                    <td>{{cust.custLastName}}</td>
+                    <td>{{cust.custPhoneNumber}}</td>
+                    <td>{{cust.custEmail}}</td>
+                    <td>{{cust.state}}</td>
+                    <td>{{cust.city}}</td>
+                    <td>
+                        <p [ngClass]="{'text-success': cust.status, 'text-danger': !cust.status}">
+                            {{ cust.status ? 'Active' : 'Inactive' }}
+                        </p>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            data-bs-target="#editCustomer" (click)="editCustomer(cust)">Edit</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" (click)="deleteCustomer(cust)">Delete</button>
+
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination justify-content-center">
+                <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                    <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                    <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                        }}</a>
+                </li>
+                <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                    <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+    <div class="modal fade" id="addCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="exampleModalLabel">Add new customer</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="custDetail">
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">First name</label>
+                            <input type="text" class="form-control" formControlName="custFirstName" id="custFirstName"
+                                aria-describedby="emailHelp">
+
+                            <small
+                                *ngIf="custDetail.get('custFirstName')?.dirty && custDetail.get('custFirstName')?.hasError('required')"
+                                class="text-danger">
+                                *CustFirstname is requried
+                            </small>
+                            <small *ngIf="
+                               custDetail.get('custFirstName')?.dirty &&
+                               custDetail
+                                 .get('custFirstName')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("custFirstName")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Last name</label>
+                            <input type="text" class="form-control" formControlName="custLastName" id="custLastName"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="custDetail.get('custLastName')?.dirty && custDetail.get('custLastName')?.hasError('required')"
+                                class="text-danger">
+                                *CustLastname is requried
+                            </small>
+                            <small *ngIf="
+                               custDetail.get('custLastName')?.dirty &&
+                               custDetail
+                                 .get('custLastName')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("custLastName")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <input type="text" class="form-control" formControlName="custEmail" id="custEmail"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="custDetail.get('custEmail')?.dirty && custDetail.get('custEmail')?.hasError('email')"
+                                class="text-danger">
+                                *Email is requried
+                            </small>
+
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">State</label>
+                            <input type="text" class="form-control" formControlName="state" id="state"
+                                aria-describedby="emailHelp">
+
+                            <small
+                                *ngIf="custDetail.get('state')?.dirty && custDetail.get('state')?.hasError('required')"
+                                class="text-danger">
+                                *State is requried
+                            </small>
+                            <small *ngIf="
+                           custDetail.get('state')?.dirty &&
+                           custDetail
+                             .get('state')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("state")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">City</label>
+                            <input type="text" class="form-control" formControlName="city" id="city"
+                                aria-describedby="emailHelp">
+
+                            <small *ngIf="custDetail.get('city')?.dirty && custDetail.get('city')?.hasError('required')"
+                                class="text-danger">
+                                *City is requried
+                            </small>
+                            <small *ngIf="
+                           custDetail.get('city')?.dirty &&
+                           custDetail
+                             .get('city')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("city")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Phone</label>
+                            <input type="text" class="form-control" formControlName="custPhoneNumber"
+                                id="custPhoneNumber" aria-describedby="emailHelp">
+                            <small
+                                *ngIf="custDetail.get('custPhoneNumber')?.dirty && custDetail.get('custPhoneNumber')?.hasError('required')"
+                                class="text-danger">
+                                *phoneNumber is requried
+                            </small>
+                            <small *ngIf="
+                               custDetail.get('custPhoneNumber')?.dirty &&
+                               custDetail
+                                 .get('custPhoneNumber')
+                                 ?.hasError('phoneValidate')
+                             " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("custPhoneNumber")
+                                ?.getError("phoneValidate").message
+                                }}</small>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">User name</label>
+                            <input type="text" class="form-control" formControlName="userName" id="userName"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="custDetail.get('userName')?.dirty && custDetail.get('userName')?.hasError('required')"
+                                class="text-danger">
+                                *UserName is requried
+                            </small>
+                            <small
+                                *ngIf="custDetail.get('userName')?.dirty && custDetail.get('userName')?.hasError('passwordValidator')"
+                                class="text-danger">
+                                *{{
+                                custDetail
+                                .get("userName")
+                                ?.getError("passwordValidator").message
+                                }}
+                            </small>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Password</label>
+                            <input type="text" class="form-control" formControlName="password" id="password"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="custDetail.get('password')?.dirty && custDetail.get('password')?.hasError('required')"
+                                class="text-danger">
+                                *Password is requried
+                            </small>
+                            <small
+                                *ngIf="custDetail.get('password')?.dirty && custDetail.get('password')?.hasError('passwordValidator')"
+                                class="text-danger">
+                                *{{
+                                custDetail
+                                .get("password")
+                                ?.getError("passwordValidator").message
+                                }}
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success" (click)="addCustomer()">Add
+                                    customer</button>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- edit customer -->
+    <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5" id="exampleModalLabel">Edit customer details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form [formGroup]="custDetail">
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">First name</label>
+                        <input type="text" class="form-control" formControlName="custFirstName" id="custFirstName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="custDetail.get('custFirstName')?.dirty && custDetail.get('custFirstName')?.hasError('required')"
+                            class="text-danger">
+                            *Customer firstname is requried
+                        </small>
+                        <small *ngIf="
+                           custDetail.get('custFirstName')?.dirty &&
+                           custDetail
+                             .get('custFirstName')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                            *{{
+                            custDetail
+                            .get("custFirstName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Last name</label>
+                        <input type="text" class="form-control" formControlName="custLastName" id="custLastName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="custDetail.get('custLastName')?.dirty && custDetail.get('custLastName')?.hasError('required')"
+                            class="text-danger">
+                            *Customer lastname is requried
+                        </small>
+                        <small *ngIf="
+                           custDetail.get('custLastName')?.dirty &&
+                           custDetail
+                             .get('custLastName')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                            *{{
+                            custDetail
+                            .get("custLastName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="text" class="form-control" formControlName="custEmail" id="custEmail"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="custDetail.get('custEmail')?.dirty && custDetail.get('custEmail')?.hasError('email')"
+                            class="text-danger">
+                            *Email is requried
+                        </small>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">State</label>
+                        <input type="text" class="form-control" formControlName="state" id="state"
+                            aria-describedby="emailHelp">
+
+                        <small *ngIf="custDetail.get('state')?.dirty && custDetail.get('state')?.hasError('required')"
+                            class="text-danger">
+                            *State is requried
+                        </small>
+                        <small *ngIf="
+                   custDetail.get('state')?.dirty &&
+                   custDetail
+                     .get('state')
+                     ?.hasError('onlyCharacters')
+                 " class="text-danger">
+                            *{{
+                            custDetail
+                            .get("state")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">City</label>
+                        <input type="text" class="form-control" formControlName="city" id="city"
+                            aria-describedby="emailHelp">
+
+                        <small *ngIf="custDetail.get('city')?.dirty && custDetail.get('city')?.hasError('required')"
+                            class="text-danger">
+                            *City is requried
+                        </small>
+                        <small *ngIf="
+                           custDetail.get('city')?.dirty &&
+                           custDetail
+                             .get('city')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                            *{{
+                            custDetail
+                            .get("city")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Phone</label>
+                        <input type="text" class="form-control" formControlName="custPhoneNumber" id="custPhoneNumber"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="custDetail.get('custPhoneNumber')?.dirty && custDetail.get('custPhoneNumber')?.hasError('required')"
+                            class="text-danger">
+                            *Phone is requried
+                        </small>
+                        <small *ngIf="
+                           custDetail.get('custPhoneNumber')?.dirty &&
+                           custDetail
+                             .get('custPhoneNumber')
+                             ?.hasError('phoneValidate')
+                         " class="text-danger">
+                            *{{
+                            custDetail
+                            .get("custPhoneNumber")
+                            ?.getError("phoneValidate").message
+                            }}</small>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="updateCustomer()"
+                                data-bs-dismiss="modal">Update</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>

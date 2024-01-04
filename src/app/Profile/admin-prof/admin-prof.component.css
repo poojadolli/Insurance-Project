@@ -1,0 +1,115 @@
+
+.container{
+   width: 600px;
+  margin-top: -100px;
+}
+.profile img{
+   width: 80px;
+   height:80px;
+   margin-bottom: 30px;
+   
+}
+h2 {
+   text-align: center;
+   /* Ensures the text is centered within its container */
+   margin-top: -80px;
+}
+.profile{
+   margin-left: 200px;
+  
+   margin-right: auto;
+  
+}
+.col-md-6{
+   margin-left: 400px;
+}
+.row .changePassword{
+   margin-top: 70px;
+   margin-left: auto;
+   width: 50px;
+   
+}
+
+
+
+/* .form-header {
+   margin-bottom: 10px;
+ 
+} */
+
+/* input {
+   margin-bottom: 10px;
+  
+} */
+
+button.submit {
+   background-color: #3498db;
+   /* Background color for the buttons */
+   color: #ffffff;
+   /* Text color for the buttons */
+   padding: 10px 20px;
+   /* Adjust padding to your preference */
+   border: none;
+   /* Remove button border */
+   border-radius: 5px;
+
+   /* Add rounded corners */
+   margin-left: 180px;
+}
+
+button.submit:hover {
+   background-color: #2980b9;
+   /* Change background color on hover */
+}
+
+input {
+   margin-bottom: 10px;
+   /* Add a gap between input elements */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.navbar {
+   position: fixed;
+   width: 100%;
+   top: 0;
+   z-index: 1000;
+   height: 60px;
+   display: flex;
+   justify-content: center;
+   text-transform: uppercase;
+   font-size: large;
+}
+
+.h1 {
+   font-family: 'Courier New', Courier, monospace
+}
+
+.navbar-brand,
+.nav-link {
+   font-weight: bold;
+}
+
+.navbar-nav .nav-item .dropdown-menu .dropdown-item {
+   text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .dropdown-toggle {
+   text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+   font-weight: bold;
+}

@@ -1,0 +1,97 @@
+.back {
+    background: linear-gradient(#C6FFDD, #fae4af, #f5b0b2);
+
+}
+.container-fluid {
+    background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg");
+    background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      padding: 90px;
+      font-family: 'Arial', sans-serif;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+  
+  }
+.about-us {
+
+    background-color: #e0f3fb;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.about-us h1 {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+
+}
+
+.about-us h2 {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.about-us p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.about-us ul {
+    list-style-type: disc;
+    margin-bottom: 10px;
+}
+
+.about-us ul li {
+    font-size: 16px;
+}
+
+.about-us a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.about-us a:hover {
+    text-decoration: underline;
+}
+
+ .navbar {
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: large;
+}
+
+.h1 {
+    font-family: 'Courier New', Courier, monospace
+}
+
+.navbar-brand,
+.nav-link {
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item .dropdown-menu .dropdown-item {
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .dropdown-toggle {
+    text-transform: uppercase;
+}
+
+ .navbar-nav .nav-item .nav-link.active {
+    font-weight: bold;
+}  
+
+.container {
+    min-height: 700px;
+    margin-top: 50px;
+}

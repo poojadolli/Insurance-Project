@@ -1,0 +1,216 @@
+<app-emp-header></app-emp-header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Update Form</title>
+    <style>
+        body {
+            background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+
+            /* background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            padding: 90px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+            margin-left: 70px;
+            margin-right: 70px;
+            margin-bottom: 170px;
+
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .text-danger {
+            color: red;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+  
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+            <div>
+                <label for="userName" class="form-label">Username:</label>
+                <input type="text" id="userName" formControlName="userName">
+            </div>
+            <div>
+                <label for="oldPassword" class="form-label">Old Password:</label>
+                <input type="password" id="oldPassword" formControlName="oldPassword">
+            </div>
+            <div>
+                <label for="newPassword" class="form-label">New Password:</label>
+                <input type="password" id="newPassword" formControlName="newPassword">
+            </div>
+            <button type="submit" [disabled]="!passwordForm.valid">Update Password</button>
+            <button routerLink="/emp">Back To DashBoard</button>
+
+
+        </form>
+    </div>
+    <div class="container">
+   <h4><b>Update-Profile</b></h4>
+        <table class="table table-responsive-md">
+            <tbody>
+                <tr>
+                    <td>First Name</td>
+                    <td>{{ employeeProfile.employeeFirstName }}</td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>{{ employeeProfile.employeeLastName }}</td>
+                </tr>
+                <tr>
+                    <td>Salary</td>
+                    <td>{{ employeeProfile.salary }}</td>
+                </tr>
+                <tr>
+                    <td>Mobile No</td>
+                    <td>
+                        <div *ngIf="!isEdit">{{ employeeProfile.phoneNumber }}</div>
+                        <div *ngIf="isEdit">
+                            <input class="table-input" type="string" [(ngModel)]="employeeProfile.phoneNumber" />
+                            <span class="text-danger" *ngIf="validateField(employeeProfile.phoneNumber)">*required</span>
+                            <span class="text-danger" *ngIf="validatePhone(employeeProfile.phoneNumber)">*Invalid</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <div *ngIf="!isEdit">{{ employeeProfile.email }}</div>
+                        <div *ngIf="isEdit">
+                            <input class="table-input" type="email" [(ngModel)]="employeeProfile.email" />
+                            <span class="text-danger" *ngIf="validateField(employeeProfile.email)">*required</span>
+                            <span class="text-danger" *ngIf="validateEmail(employeeProfile.email)">*Invalid</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Buttons within the container -->
+        <div *ngIf="!isEdit" class="col-12 mt-2">
+            <button class="submit" (click)="onEdit()">Edit Profile</button>
+        </div>
+
+        <div *ngIf="isEdit" class="col-12 mt-2">
+            <button class="submit" (click)="updateProfile()">Update Profile</button>
+        </div>
+    </div>
+
+    <!-- <div class="container">
+
+
+        <table class="table table-responsive-md">
+            <tbody>
+                <tr>
+                    <td>First Name</td>
+
+                    <td>
+                        {{ employeeProfile.employeeFirstName }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>{{ employeeProfile.employeeLastName }}</td>
+                </tr>
+
+                <tr>
+                    <td>Salary</td>
+                    <td>
+                        {{employeeProfile.salary }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile No</td>
+                    <td>
+                        <div *ngIf="!isEdit">{{ employeeProfile.phoneNumber }}</div>
+                        <div *ngIf="isEdit">
+                            <input class="table-input" type="string" [(ngModel)]="employeeProfile.phoneNumber" />
+                            <span class="text-danger"
+                                *ngIf="validateField(employeeProfile.phoneNumber)">*required</span>
+                            <span class="text-danger" *ngIf="validatePhone(employeeProfile.phoneNumber)">*Invalid</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <div *ngIf="!isEdit">{{ employeeProfile.email }}</div>
+                        <div *ngIf="isEdit">
+                            <input class="table-input" type="email" [(ngModel)]="employeeProfile.email" />
+                            <span class="text-danger" *ngIf="validateField(employeeProfile.email)">*required</span>
+                            <span class="text-danger" *ngIf="validateEmail(employeeProfile.email)">*Invalid</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <div *ngIf="!isEdit" class="col-12 mt-2">
+                <button class="submit" (click)="onEdit()">Edit Profile</button>
+
+            </div>
+
+            <div *ngIf="isEdit" class="col-12 mt-2">
+                <button class="submit" (click)="updateProfile()">Update Profile</button>
+
+            </div>
+        </table>
+    </div> -->
+</body>
+
+</html>

@@ -1,0 +1,359 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h2><b>Employees</b></h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit">Add
+            employee</button> &nbsp;
+        <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+
+        <hr>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="pagination-controls ms-4 mb-3 pt-3">
+                <!-- Other pagination elements -->
+                <label for="pageSizeSelect"><b>Page size:</b></label>
+                <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                    <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+                </select>
+                <div class="search-container">
+                    <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                        (keyup)="onSearch()" placeholder="Search" />
+
+                </div>
+            </div>
+        </div>
+        <!-- Other pagination elements -->
+        <table class="table table-hover custom-table">
+            <thead>
+                <tr>
+                    <th scope="col">Employee Id</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let emp of empList">
+                    <td>{{emp.employeeId}}</td>
+                    <td>{{emp.employeeFirstName}}</td>
+                    <td>{{emp.employeeLastName}}</td>
+                    <td>{{emp.phoneNumber}}</td>
+                    <td>{{emp.email}}</td>
+                    <td>&#x20B9;{{emp.salary}}</td>
+                    <td>
+                        <p [ngClass]="{'text-success': emp.status, 'text-danger': !emp.status}">
+                            {{ emp.status ? 'Active' : 'Inactive' }}
+                        </p>
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            data-bs-target="#editEmployee" (click)="editEmployee(emp)">Edit</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" (click)="deleteEmployee(emp)">Change
+                        </button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination justify-content-center">
+                <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                    <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                    <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                        }}</a>
+                </li>
+                <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                    <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+    <!-- ADD emp-->
+    <div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h3 class="modal-title fs-5" id="exampleModalLabel">Add new employee</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="empDetails">
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">First name</label>
+                            <input type="text" class="form-control" formControlName="employeeFirstName"
+                                id="employeeFirstName" aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('employeeFirstName')?.dirty && empDetails.get('employeeFirstName')?.hasError('required')"
+                                class="text-danger">
+                                *EmployeeFirstName is requried
+                            </small>
+                            <small *ngIf="
+                                   empDetails.get('employeeFirstName')?.dirty &&
+                                   empDetails
+                                     .get('employeeFirstName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger"> *{{
+                                empDetails
+                                .get("employeeFirstName")
+                                ?.getError("onlyCharacters").message
+                                }}
+                            </small>
+
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Last name</label>
+                            <input type="text" class="form-control" formControlName="employeeLastName"
+                                id="employeeLastName" aria-describedby="emailHelp">
+
+                            <small
+                                *ngIf="empDetails.get('employeeLastName')?.dirty && empDetails.get('employeeLastName')?.hasError('required')"
+                                class="text-danger">
+                                *EmployeeLastName is requried
+                            </small>
+
+                            <small *ngIf="
+                               empDetails.get('employeeLastName')?.dirty &&
+                               empDetails
+                                 .get('employeeLastName')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger"> *{{
+                                empDetails
+                                .get("employeeLastName")
+                                ?.getError("onlyCharacters").message
+                                }}
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <input type="text" class="form-control" formControlName="email" id="email"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('email')?.dirty && empDetails.get('email')?.hasError('required')"
+                                class="text-danger">
+                                *Email is requried
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Salary</label>
+                            <input type="text" class="form-control" formControlName="salary" id="salary"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('salary')?.dirty && empDetails.get('salary')?.hasError('required')"
+                                class="text-danger">
+                                *Salary is requried
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Phone</label>
+                            <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber"
+                                aria-describedby="emailHelp">
+
+                            <small
+                                *ngIf="empDetails.get('phoneNumber')?.dirty && empDetails.get('phoneNumber')?.hasError('required')"
+                                class="text-danger">
+                                *phoneNumber is requried
+                            </small>
+                            <small
+                                *ngIf="empDetails.get('phoneNumber')?.dirty && empDetails.get('phoneNumber')?.hasError('phoneValidate')"
+                                class="text-danger">
+                                *{{
+                                empDetails
+                                .get("phoneNumber")
+                                ?.getError("phoneValidate").message
+                                }}
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Username</label>
+                            <input type="text" class="form-control" formControlName="userName" id="userName"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('userName')?.dirty && empDetails.get('userName')?.hasError('required')"
+                                class="text-danger">
+                                *UserName is requried
+                            </small>
+                            <small
+                                *ngIf="empDetails.get('userName')?.dirty && empDetails.get('userName')?.hasError('passwordValidator')"
+                                class="text-danger">
+                                *{{
+                                empDetails
+                                .get("userName")
+                                ?.getError("passwordValidator").message
+                                }}
+                            </small>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Password</label>
+                            <input type="text" class="form-control" formControlName="password" id="password"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('password')?.dirty && empDetails.get('password')?.hasError('required')"
+                                class="text-danger">
+                                *Password is requried
+                            </small>
+                            <small
+                                *ngIf="empDetails.get('password')?.dirty && empDetails.get('password')?.hasError('passwordValidator')"
+                                class="text-danger">
+                                *{{
+                                empDetails.get('password')
+                                ?.getError("passwordValidator").message
+                                }}
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="modal-footer" >
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success" (click)="onSubmit()">Add
+                                    Employee</button>
+                            </div>
+
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- edit plan -->
+    <div class="modal fade" id="editEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5" id="exampleModalLabel">Edit employee details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="empDetails">
+                       
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Employee firstname</label>
+                            <input type="text" class="form-control" formControlName="employeeFirstName"
+                                id="employeeFirstName" aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('employeeFirstName')?.dirty && empDetails.get('employeeFirstName')?.hasError('required')"
+                                class="text-danger">
+                                *EmployeeFirstName is requried
+                            </small>
+                            <small *ngIf="
+                                   empDetails.get('employeeFirstName')?.dirty &&
+                                   empDetails
+                                     .get('employeeFirstName')
+                                     ?.hasError('onlyCharacters')
+                                 " class="text-danger"> *{{
+                                empDetails
+                                .get("employeeFirstName")
+                                ?.getError("onlyCharacters").message
+                                }}
+                            </small>
+
+
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Employee lastname</label>
+                            <input type="text" class="form-control" formControlName="employeeLastName"
+                                id="employeeLastName" aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('employeeLastName')?.dirty && empDetails.get('employeeLastName')?.hasError('required')"
+                                class="text-danger">
+                                *EmployeeLastName is requried
+                            </small>
+
+                            <small *ngIf="
+                               empDetails.get('employeeLastName')?.dirty &&
+                               empDetails
+                                 .get('employeeLastName')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger"> *{{
+                                empDetails
+                                .get("employeeLastName")
+                                ?.getError("onlyCharacters").message
+                                }}
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <input type="text" class="form-control" formControlName="email" id="email"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('email')?.dirty && empDetails.get('email')?.hasError('required')"
+                                class="text-danger">
+                                *Email is requried
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Salary</label>
+                            <input type="text" class="form-control" formControlName="salary" id="salary"
+                                aria-describedby="emailHelp">
+                            <small
+                                *ngIf="empDetails.get('salary')?.dirty && empDetails.get('salary')?.hasError('required')"
+                                class="text-danger">
+                                *Salary is requried
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Phone</label>
+                            <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber"
+                                aria-describedby="emailHelp">
+
+                            <small
+                                *ngIf="empDetails.get('phoneNumber')?.dirty && empDetails.get('phoneNumber')?.hasError('required')"
+                                class="text-danger">
+                                *phoneNumber is requried
+                            </small>
+                            <small
+                                *ngIf="empDetails.get('phoneNumber')?.dirty && empDetails.get('phoneNumber')?.hasError('phoneValidate')"
+                                class="text-danger">
+                                *{{
+                                empDetails
+                                .get("phoneNumber")
+                                ?.getError("phoneValidate").message
+                                }}
+                            </small>
+                        </div>
+                        
+
+                        <div class="mb-3">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success" (click)="updateEmployee()"
+                                    data-bs-dismiss="modal">Update Employee</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,119 @@
+<app-customer-header></app-customer-header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Update Form</title>
+  <style>
+    body {
+      background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      padding: 160px;
+    }
+  </style>
+</head>
+
+<body>
+  
+<div class="container">
+  <form [formGroup]="payPremiumForm">
+    <div class="row mb-2">
+      <div class="col-md-2">Amount</div>
+
+      <div class="col-md-3">
+        <input type="text" class="input" formControlName="amount" [(ngModel)]="policyToPay.premiumAmount"
+          [readOnly]="true" />
+
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2"> Payment Type*</div>
+
+      <div class="col-md-3">
+        <select formControlName="paymentType">
+          <option value="Debit Card">Debit Card</option>
+          <option value="Credit Card">Credit Card</option>
+        </select>
+        <small *ngIf="
+                    payPremiumForm.get('paymentType')?.dirty &&
+                    payPremiumForm.get('paymentType')?.hasError('required')
+                    " class="text-danger">*required</small>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2 label">Card Holder Name*</div>
+      <div class="col">
+        <input type="text" class="input" formControlName="cardHolderName" />
+        <small *ngIf="
+                    payPremiumForm.get('cardHolderName')?.dirty &&
+                    payPremiumForm.get('cardHolderName')?.hasError('required')
+                    " class="text-danger">*required</small>
+        <small *ngIf="
+                  payPremiumForm.get('cardHolderName')?.dirty &&
+                  payPremiumForm
+                      .get('cardHolderName')
+                      ?.hasError('onlyCharacters')
+                  " class="text-danger">
+          <br> *{{
+          payPremiumForm
+          .get("cardHolderName")
+          ?.getError("onlyCharacters").message
+          }}</small>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2 label">Card Number*</div>
+      <div class="col">
+        <input type="number" class="input" formControlName="cardNumber" />
+        <small *ngIf="
+                    payPremiumForm.get('cardNumber')?.dirty &&
+                    payPremiumForm.get('cardNumber')?.hasError('pattern')
+                    " class="text-danger">*Invalid</small>
+        <small *ngIf="
+                          payPremiumForm.get('cardNumber')?.dirty &&
+                          payPremiumForm.get('cardNumber')?.hasError('required')
+                          " class="text-danger">*required</small>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2  label ">CVV*</div>
+      <div class="col">
+        <input type="number" class="input" formControlName="cvvNo" />
+        <small *ngIf="
+                    payPremiumForm.get('cvvNo')?.dirty &&
+                    payPremiumForm.get('cvvNo')?.hasError('required')
+                    " class="text-danger">*required</small>
+        <small *ngIf="
+                  payPremiumForm.get('cvvNo')?.dirty &&
+                  payPremiumForm.get('cvvNo')?.hasError('pattern')
+                  " class="text-danger">*Invalid</small>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-md-2 label">Expiry Date*</div>
+      <div class="col">
+        <input type="date" class="input" formControlName="expiryDate" [min]="minDate" />
+        <small *ngIf="
+                    payPremiumForm.get('expiryDate')?.dirty &&
+                    payPremiumForm.get('expiryDate')?.hasError('required')
+                    " class="text-danger">*required</small>
+      </div>
+    </div>
+  </form>
+
+
+
+  <button type="button" class="btn btn-secondary" routerLink="/">
+    Cancel
+  </button>
+  <button id="save" type="button" class="btn btn-primary ms-4" (click)="payPremium()">
+    Pay
+  </button>
+
+
+</div>
+</body></html>

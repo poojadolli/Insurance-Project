@@ -1,0 +1,83 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid">
+
+    <div class="col-md-12">
+        <h2><b>Claims</b></h2>
+        
+        <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+    
+        <hr>
+      </div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+
+            <th scope="col">Claim Id </th>
+            <th scope="col">More</th>    
+            <th scope="col">Account number </th>
+            <th scope="col">IFSC code </th>
+            <th scope="col"> Date </th>
+            <th scope="col">Amount</th>
+            <th scope="col" colspan="2" >Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let calim of calimList">
+            <td>{{calim.calimId}}</td>
+            <td>
+                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                    data-bs-target="#policyDetailsModal" (click)="fetchPolicyDetails(calim.policyNumber)">
+                    Details
+                </button>
+            </td>
+            <td>{{calim.bankAccountNumber}}</td>
+            <td>{{calim.ifScCode}}</td>
+            <td>{{calim.date| date : "dd-MM-YYYY"}}</td>
+            <td>&#x20B9;{{calim.claimAmount}}</td>
+
+            <td>
+                <div *ngIf="!calim.status">
+                    <button class="btn btn-primary" (click)="updateStatus(calim)">Pending</button>
+                    
+                </div>
+                <div *ngIf="calim.status">
+                    <p>Approved</p>
+                </div>
+            </td>
+           
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<div class="modal fade" id="policyDetailsModal" tabindex="-1" role="dialog" aria-labelledby="policyDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="policyDetailsModalLabel">Policy details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="policy">
+
+                    <p><strong>Policy number:</strong> {{policy.policyNumber}}</p>
+                    <p><strong>Premium amount:</strong> {{policy.premiumAmount}}</p>
+                    <p><strong>Sum assured:</strong> {{policy.sumAssured}}</p>
+                    <p><strong>Premium type:</strong> {{policy.premiumType}}</p>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

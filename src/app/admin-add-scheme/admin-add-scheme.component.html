@@ -1,0 +1,227 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h2><b>Schemes</b></h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addScheme" type="submit">Add
+            scheme</button> &nbsp;
+        <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+    
+        <hr>
+      </div>
+
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page Size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="mx-auto" style="width: 90%;">
+        <table class="table align-middle mb-0 bg-white table-hover">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">Scheme Id</th>
+                    <th scope="col">Scheme name</th>
+                    <th scope="col">More</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let scheme of schemeList">
+                    <td>{{scheme.schemeId}}</td>
+                    <td>{{scheme.schemeName}}</td>
+                   
+                    <td>
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            data-bs-target="#schemeDetailsModal" (click)="fetchSchemeDetails(scheme.planID)">
+                            Detail
+                        </button>
+                    </td>
+                   
+
+                    <td>
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            data-bs-target="#editScheme" (click)="editScheme(scheme)">Edit</button>
+                    </td>
+                    <td> <button type="button" class="btn btn-danger" (click)="deleteScheme(scheme)">Delete</button>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+</div>
+<!-- ADD  Scheme-->
+<div class="modal fade" id="addScheme" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: antiquewhite;">
+
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Add new scheme</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="schemeDetails">
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Scheme name</label>
+                        <input type="text" class="form-control" formControlName="schemeName" id="schemeName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetails.get('schemeName')?.dirty && schemeDetails.get('schemeName')?.hasError('required')"
+                            class="text-danger">
+                            *SchemeName is requried
+                        </small>
+                        <small *ngIf="
+            schemeDetails.get('schemeName')?.dirty &&
+            schemeDetails
+              .get('schemeName')
+              ?.hasError('onlyCharacters')
+          " class="text-danger">
+                            *{{
+                            schemeDetails
+                            .get("schemeName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+
+
+                
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Plan name</label>
+                        <select class="form-select" formControlName="planID" id="planID">
+                            <option [value]="" disabled>select a plan</option>
+                            <option *ngFor="let plan of planList" [value]="plan.planId">{{plan.planName}}
+                            </option>
+                        </select>
+                    </div>
+
+
+                   
+                    <div class="mb-3">
+                        <div class="modal-footer" style="background-color: antiquewhite;">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="onSubmit()">Add
+                                Scheme</button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit plan -->
+<div class="modal fade" id="editScheme" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: antiquewhite;">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Edit schemes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="schemeDetails">
+                   
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Scheme name</label>
+                        <input type="text" class="form-control" formControlName="schemeName" id="schemeName"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetails.get('schemeName')?.dirty && schemeDetails.get('schemeName')?.hasError('required')"
+                            class="text-danger">
+                            *Schemename is requried
+                        </small>
+                        <small *ngIf="
+                           schemeDetails.get('schemeName')?.dirty &&
+                           schemeDetails
+                             .get('schemeName')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                            *{{
+                            schemeDetails
+                            .get("schemeName")
+                            ?.getError("onlyCharacters").message
+                            }}</small>
+                    </div>
+                   
+
+                    <div class="mb-3">
+                        <div class="modal-footer" style="background-color: antiquewhite;">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="onUpdateSubmit()"
+                                data-bs-dismiss="modal">Update Scheme</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="schemeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="schemeDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="schemeDetailsModalLabel">Plan detail</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="planScheme">
+
+                    <p><strong>Plan Id:</strong> {{ planScheme.planId }}</p>
+                    <p><strong>Plan name:</strong> {{ planScheme.planName }}</p>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

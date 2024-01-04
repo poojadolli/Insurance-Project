@@ -1,0 +1,183 @@
+<app-customer-header></app-customer-header>
+<div class="container-fluid">
+<div class="col-md-12">
+   <h2><b>Query</b></h2>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addQuery" type="submit">Add
+        query</button>&nbsp;
+    <button class="btn btn-danger ms-auto" routerLink="/customer">Back to dashboard</button>
+    <hr>
+</div>
+<!-- Other pagination elements -->
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+    <!-- Other pagination elements -->
+
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <th scope="col">Query Id</th>
+
+                <th scope="col">Email</th>
+                <th scope="col">Description</th>
+                <th scope="col">More</th>
+                <th scope="col" colspan="2">Response</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let query of quries">
+                <td>{{query.queryId}}</td>
+                <td>{{query.email}}</td>
+                <td>{{query.description}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#policyDetailsModal" (click)="fetchCustomerDetails(query.customerID)">
+                         Details
+                    </button>
+                </td>
+                <td>
+                    <div *ngIf="query.reply">{{query.reply}}</div>
+                    <div *ngIf="!query.reply" style="color: red;">Pending</div>
+                </td>
+
+
+
+
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Other pagination elements -->
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- Other pagination elements -->
+</div>
+<div class="modal fade" id="policyDetailsModal" tabindex="-1" role="dialog" aria-labelledby="policyDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="policyDetailsModalLabel">Customer Details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="customer">
+                    
+                    <p><strong>Id: </strong>{{customer.custId}}</p>
+                    <p><strong>First name:</strong>{{customer.custFirstName}}</p>
+                    <p><strong>Last name:</strong>{{customer.custLastName}}</p>
+                    <p><strong>Email:</strong> {{customer.custEmail}}</p>
+                    <p><strong>Phone:</strong> {{customer.custPhoneNumber}}</p>
+                    <p><strong>State:</strong> {{customer.state}}</p>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addQuery" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Add Question</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="queryDetail" (ngSubmit)="onSubmit()">
+                   
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Customer Id</label>
+                        <input type="text" class="form-control" formControlName="customerID" id="customerID"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="queryDetail.get('customerID')?.dirty && queryDetail.get('customerID')?.hasError('required')"
+                            class="text-danger">
+                            *Email is requried
+                        </small>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="text" class="form-control" formControlName="email" id="email"
+                            aria-describedby="emailHelp">
+
+
+                        <small *ngIf="queryDetail.get('email')?.dirty && queryDetail.get('email')?.hasError('email')"
+                            class="text-danger">
+                            *Email is requried
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Description</label>
+                        <input type="text" class="form-control" formControlName="description" id="description"
+                            aria-describedby="emailHelp">
+
+                        <small
+                            *ngIf="queryDetail.get('description')?.dirty && queryDetail.get('description')?.hasError('required')"
+                            class="text-danger">
+                            *description is requried
+                        </small>
+
+
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+                            <button type="button" class="btn btn-success"
+                                (click)="onQuerySubmit()">Question</button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>

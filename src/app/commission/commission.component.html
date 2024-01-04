@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <a class="navbar-brand" href="#"></a>
+        </div>
+    </nav>
+
+    <div class="container mt-2">
+        <div class="d-flex justify-content-center"> <!-- Center the form -->
+            <div class="col-lg-4"> <!-- Adjust the size of the form -->
+                <h3 class="fs-4">Congrats on Adding a new Policy</h3>
+                <form [formGroup]="commDetail">
+
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Commission-Amount</label>
+                        <input type="number" class="form-control" formControlName="amount" id="amount"
+                            aria-describedby="emailHelp">
+                    </div>
+                  
+                    <div class="mb-3" style="display: none;">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" formControlName="date" id="date"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="policyNumber" class="form-label">Policy Number</label>
+                        <input type="number" class="form-control" formControlName="policyNumber" id="policyNumber"
+                            aria-describedby="emailHelp">
+                    </div>
+                   
+
+                    <button type="button" class="btn btn-success" (click)="addCommission()">Thank-You
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

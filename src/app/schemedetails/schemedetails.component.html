@@ -1,0 +1,590 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid">
+  <div class="col-md-12">
+    <h2><b>Scheme details</b></h2>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addScheme" type="submit">Add
+        scheme detail</button>&nbsp;
+    <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+
+    <hr>
+  </div>
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Scheme detail Id</th>
+                <th scope="col">More</th>
+                <th scope="col">Description</th>
+                <th scope="col">Min amount</th>
+                <th scope="col">Maxi amount</th>
+                <th scope="col">Min invest time</th>
+                <th scope="col">Maxi invest time</th>
+                <th scope="col">Min age</th>
+                <th scope="col">Maxi age</th>
+                <th scope="col">Profit ratio</th>
+                <th scope="col">Registration ratio</th>
+                <th scope="col">Installement ratio</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let scheme of schemeList">
+                <td>{{scheme.detailId}}</td>
+                <td> <button type="button" class="btn btn-primary " data-bs-toggle="modal"
+                        data-bs-target="#schemeDetailsModal" (click)="fetchCustomerDetails(scheme.detailId)">
+                        Details
+                    </button>
+                </td>
+                <td>{{scheme.description}}</td>
+                <td>{{scheme.minimumAmount}}</td>
+                <td>{{scheme.maximumAmount}}</td>
+                <td>{{scheme.minimumInvestTime}}</td>
+                <td>{{scheme.maximumInvestTime}}</td>
+                <td>{{scheme.minimumAge}}</td>
+                <td>{{scheme.maximumAge}}</td>
+                <td>{{scheme.profitRatio}}</td>
+                <td>{{scheme.registrationCommRatio}}</td>
+                <td>{{scheme.installmentCommRatio}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#editScheme" (click)="editScheme(scheme)">Edit</button>
+                </td>
+                <td> <button type="button" class="btn btn-danger" (click)="deleteScheme(scheme)">Delete</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</div>
+<div class="modal fade" id="schemeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="schemeDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="agentDetailsModalLabel">Scheme details</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="scheme">
+                    <p><strong>Scheme Id:</strong> {{ scheme.schemeId }}</p>
+                    <p><strong>Scheme name:</strong> {{ scheme.schemeName }}</p>
+                    <p><strong>Status:</strong> {{ scheme.status }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addScheme" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Add scheme detail</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="schemeDetail">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Select scheme</label>
+                        <select type="text" class="form-control" formControlName="insuranceSchemeId"
+                            id="insuranceSchemeId" aria-describedby="emailHelp">
+                            <option [value]="" disabled>select a SchemeName</option>
+                            <option *ngFor="let schemes of planList" [value]="schemes.schemeId">
+                                {{schemes.schemeName}}</option>
+                        </select>
+                        <small
+                            *ngIf="schemeDetail.get('insuranceSchemeId')?.dirty && schemeDetail.get('insuranceSchemeId')?.hasError('nonNegativeNumber')"
+                            class="text-danger">
+                            *InsuranceSchemeId is requried
+
+                        </small>
+
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Description</label>
+                        <input type="text" class="form-control" formControlName="description" id="description"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('description')?.dirty && schemeDetail.get('description')?.hasError('required')"
+                            class="text-danger">
+                            *schemeDetail is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('description')?.dirty &&
+                     schemeDetail
+                       .get('description')
+                       ?.hasError('onlyCharacters')
+                   " class="text-danger"> *{{
+                            schemeDetail
+                            .get("description")
+                            ?.getError("onlyCharacters").message
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Minimum amount</label>
+                        <input type="text" class="form-control" formControlName="minimumAmount" id="minimumAmount"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('minimumAmount')?.dirty && schemeDetail.get('minimumAmount')?.hasError('required')"
+                            class="text-danger">
+                            *Minimum amount is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('minimumAmount')?.dirty &&
+                     schemeDetail
+                       .get('minimumAmount')
+                       ?.hasError('rangeError')
+                   " class="text-danger"> *{{
+
+                            schemeDetail.get('minimumAmount')?.getError('rangeError').min }} and {{
+                            schemeDetail.get('minimumAmount')?.getError('rangeError').max
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Maximum amount</label>
+                        <input type="text" class="form-control" formControlName="maximumAmount" id="maximumAmount"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('maximumAmount')?.dirty && schemeDetail.get('maximumAmount')?.hasError('required')"
+                            class="text-danger">
+                            *Maximum amount is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('maximumAmount')?.dirty &&
+                     schemeDetail
+                       .get('maximumAmount')
+                       ?.hasError('rangeError')
+                   " class="text-danger"> *{{
+
+                            schemeDetail.get('maximumAmount')?.getError('rangeError').min }} and {{
+                            schemeDetail.get('maximumAmount')?.getError('rangeError').max
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Minimum invest time</label>
+                        <input type="text" class="form-control" formControlName="minimumInvestTime"
+                            id="minimumInvestTime" aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('minimumInvestTime')?.dirty && schemeDetail.get('minimumInvestTime')?.hasError('required')"
+                            class="text-danger">
+                            *minimumInvestTime is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('minimumInvestTime')?.dirty &&
+                     schemeDetail
+                       .get('minimumInvestTime')
+                       ?.hasError('rangeError')
+                   " class="text-danger"> *{{
+
+                            schemeDetail.get('minimumInvestTime')?.getError('rangeError').min }} and {{
+                            schemeDetail.get('minimumInvestTime')?.getError('rangeError').max
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Maximum invest time</label>
+                        <input type="text" class="form-control" formControlName="maximumInvestTime"
+                            id="maximumInvestTime" aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('maximumInvestTime')?.dirty && schemeDetail.get('maximumInvestTime')?.hasError('required')"
+                            class="text-danger">
+                            *maximumInvestTime is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('maximumInvestTime')?.dirty &&
+                     schemeDetail
+                       .get('maximumInvestTime')
+                       ?.hasError('rangeError')
+                   " class="text-danger"> *{{
+
+                            schemeDetail.get('maximumInvestTime')?.getError('rangeError').min }} and {{
+                            schemeDetail.get('maximumInvestTime')?.getError('rangeError').max
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Minimum age</label>
+                        <input type="text" class="form-control" formControlName="minimumAge" id="minimumAge"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('minimumAge')?.dirty && schemeDetail.get('minimumAge')?.hasError('required')"
+                            class="text-danger">
+                            *MinimumAge Amount is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('minimumAge')?.dirty &&
+                     schemeDetail
+                       .get('minimumAge')
+                       ?.hasError('rangeError')
+                   " class="text-danger"> *{{
+
+                            schemeDetail.get('minimumAge')?.getError('rangeError').min }} and {{
+                            schemeDetail.get('minimumAge')?.getError('rangeError').max
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Maximum age</label>
+                        <input type="text" class="form-control" formControlName="maximumAge" id="maximumAge"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('maximumAge')?.dirty && schemeDetail.get('maximumAge')?.hasError('required')"
+                            class="text-danger">
+                            *MaximumAge Amount is requried
+                        </small>
+                        <small *ngIf="
+                     schemeDetail.get('maximumAge')?.dirty &&
+                     schemeDetail
+                       .get('maximumAge')
+                       ?.hasError('rangeError')
+                   " class="text-danger"> *{{
+
+                            schemeDetail.get('maximumAge')?.getError('rangeError').min }} and {{
+                            schemeDetail.get('maximumAge')?.getError('rangeError').max
+                            }}
+                        </small>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Profit ratio</label>
+                        <input type="text" class="form-control" formControlName="profitRatio" id="profitRatio"
+                            aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('profitRatio')?.dirty && schemeDetail.get('profitRatio')?.hasError('required')"
+                            class="text-danger">
+                            *Profit ratio is requried
+                        </small>
+
+                        <small *ngIf="
+               schemeDetail.get('profitRatio')?.dirty &&
+               schemeDetail
+                 .get('profitRatio')
+                 ?.hasError('min')
+             " class="text-danger"> *{{
+                            schemeDetail
+                            .get("profitRatio")
+                            ?.getError("min").message
+                            }}
+                        </small>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Registration commission ratio</label>
+                        <input type="text" class="form-control" formControlName="registrationCommRatio"
+                            id="registrationCommRatio" aria-describedby="emailHelp">
+                        <small
+                            *ngIf="schemeDetail.get('registrationCommRatio')?.dirty && schemeDetail.get('registrationCommRatio')?.hasError('required')"
+                            class="text-danger">
+                            * RegestrationCommRatio is requried
+                        </small>
+
+                        <small *ngIf="
+         schemeDetail.get('registrationCommRatio')?.dirty &&
+         schemeDetail
+           .get('registrationCommRatio')
+           ?.hasError('min')
+       " class="text-danger"> *{{
+                            schemeDetail
+                            .get("registrationCommRatio")
+                            ?.getError("min").message
+                            }}
+                        </small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Installement commission ratio</label>
+                        <input type="text" class="form-control" formControlName="installmentCommRatio"
+                            id="installmentCommRatio" aria-describedby="emailHelp">
+                    </div>
+                   
+
+                    <div class="mb-3">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" (click)="addScheme()">Add
+                                scheme detail</button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- edit customer -->
+<div class="modal fade" id="editScheme" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">Edit scheme details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="schemeDetail">
+
+
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Description</label>
+                    <input type="text" class="form-control" formControlName="description" id="description"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('description')?.dirty && schemeDetail.get('description')?.hasError('required')"
+                        class="text-danger">
+                        *schemeDetail is requried
+                    </small>
+                    <small *ngIf="
+                 schemeDetail.get('description')?.dirty &&
+                 schemeDetail
+                   .get('description')
+                   ?.hasError('onlyCharacters')
+               " class="text-danger"> *{{
+                        schemeDetail
+                        .get("description")
+                        ?.getError("onlyCharacters").message
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Minimum amount</label>
+                    <input type="text" class="form-control" formControlName="minimumAmount" id="minimumAmount"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('minimumAmount')?.dirty && schemeDetail.get('minimumAmount')?.hasError('required')"
+                        class="text-danger">
+                        *Minimum Amount is requried
+                    </small>
+                    <small *ngIf="
+                 schemeDetail.get('minimumAmount')?.dirty &&
+                 schemeDetail
+                   .get('minimumAmount')
+                   ?.hasError('rangeError')
+               " class="text-danger"> *{{
+
+                        schemeDetail.get('minimumAmount')?.getError('rangeError').min }} and {{
+                        schemeDetail.get('minimumAmount')?.getError('rangeError').max
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Maximum amount</label>
+                    <input type="text" class="form-control" formControlName="maximumAmount" id="maximumAmount"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('maximumAmount')?.dirty && schemeDetail.get('maximumAmount')?.hasError('required')"
+                        class="text-danger">
+                        *Maximum Amount is requried
+                    </small>
+                    <small *ngIf="
+                 schemeDetail.get('maximumAmount')?.dirty &&
+                 schemeDetail
+                   .get('maximumAmount')
+                   ?.hasError('rangeError')
+               " class="text-danger"> *{{
+
+                        schemeDetail.get('maximumAmount')?.getError('rangeError').min }} and {{
+                        schemeDetail.get('maximumAmount')?.getError('rangeError').max
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Minimum invest time</label>
+                    <input type="text" class="form-control" formControlName="minimumInvestTime" id="minimumInvestTime"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('minimumInvestTime')?.dirty && schemeDetail.get('minimumInvestTime')?.hasError('required')"
+                        class="text-danger">
+                        *minimumInvestTime is requried
+                    </small>
+                    <small *ngIf="
+                 schemeDetail.get('minimumInvestTime')?.dirty &&
+                 schemeDetail
+                   .get('minimumInvestTime')
+                   ?.hasError('rangeError')
+               " class="text-danger"> *{{
+
+                        schemeDetail.get('minimumInvestTime')?.getError('rangeError').min }} and {{
+                        schemeDetail.get('minimumInvestTime')?.getError('rangeError').max
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Maximum invest time</label>
+                    <input type="text" class="form-control" formControlName="maximumInvestTime" id="maximumInvestTime"
+                        aria-describedby="emailHelp">
+
+
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Minimum age</label>
+                    <input type="text" class="form-control" formControlName="minimumAge" id="minimumAge"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('minimumAge')?.dirty && schemeDetail.get('minimumAge')?.hasError('required')"
+                        class="text-danger">
+                        *MinimumAge Amount is requried
+                    </small>
+                    <small *ngIf="
+                 schemeDetail.get('minimumAge')?.dirty &&
+                 schemeDetail
+                   .get('minimumAge')
+?.hasError('rangeError')
+               " class="text-danger"> *{{
+
+                        schemeDetail.get('minimumAge')?.getError('rangeError').min }} and {{
+                        schemeDetail.get('minimumAge')?.getError('rangeError').max
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Maximum age</label>
+                    <input type="text" class="form-control" formControlName="maximumAge" id="maximumAge"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('maximumAge')?.dirty && schemeDetail.get('maximumAge')?.hasError('required')"
+                        class="text-danger">
+                        *MaximumAge Amount is requried
+                    </small>
+                    <small *ngIf="
+                 schemeDetail.get('maximumAge')?.dirty &&
+                 schemeDetail
+                   .get('maximumAge')
+                   ?.hasError('rangeError')
+               " class="text-danger"> *{{
+
+                        schemeDetail.get('maximumAge')?.getError('rangeError').min }} and {{
+                        schemeDetail.get('maximumAge')?.getError('rangeError').max
+                        }}
+                    </small>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Profit ratio</label>
+                    <input type="text" class="form-control" formControlName="profitRatio" id="profitRatio"
+                        aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('profitRatio')?.dirty && schemeDetail.get('profitRatio')?.hasError('required')"
+                        class="text-danger">
+                        *Profit ratio is requried
+                    </small>
+
+                    <small *ngIf="
+           schemeDetail.get('profitRatio')?.dirty &&
+           schemeDetail
+             .get('profitRatio')
+             ?.hasError('min')
+         " class="text-danger"> *{{
+                        schemeDetail
+                        .get("profitRatio")
+                        ?.getError("min").message
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Registration commission ratio</label>
+                    <input type="text" class="form-control" formControlName="registrationCommRatio"
+                        id="registrationCommRatio" aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('registrationCommRatio')?.dirty && schemeDetail.get('registrationCommRatio')?.hasError('required')"
+                        class="text-danger">
+                        * RegestrationCommRatio is requried
+                    </small>
+
+                    <small *ngIf="
+     schemeDetail.get('registrationCommRatio')?.dirty &&
+     schemeDetail
+       .get('registrationCommRatio')
+       ?.hasError('min')
+   " class="text-danger"> *{{
+                        schemeDetail
+                        .get("registrationCommRatio")
+                        ?.getError("min").message
+                        }}
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Installement commission ratio</label>
+                    <input type="text" class="form-control" formControlName="installmentCommRatio"
+                        id="installmentCommRatio" aria-describedby="emailHelp">
+                    <small
+                        *ngIf="schemeDetail.get('installmentCommRatio')?.dirty && schemeDetail.get('installmentCommRatio')?.hasError('required')"
+                        class="text-danger">
+                        *InstallementCommRatio is requried
+                    </small>
+
+
+                    <small *ngIf="
+     schemeDetail.get('installmentCommRatio')?.dirty &&
+     schemeDetail
+       .get('installmentCommRatio')
+       ?.hasError('min')
+   " class="text-danger"> *{{
+                        schemeDetail
+                        .get("installmentCommRatio")
+                        ?.getError("min").message
+                        }}
+                    </small>
+                </div>
+          
+                <div class="mb-3">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" (click)="updateScheme()"
+                            data-bs-dismiss="modal">Update scheme detail</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

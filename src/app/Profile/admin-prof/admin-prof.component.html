@@ -1,0 +1,200 @@
+<app-admin-header></app-admin-header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Update Form</title>
+    <style>
+        body {
+            background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+
+            /* background-image: url("https://hdwallsource.com/img/2014/9/blur-26347-27038-hd-wallpapers.jpg"); */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            padding: 90px;
+
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .text-danger {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    
+    
+    
+       
+    
+    <div class="container">
+        <div class="col-md-12">
+            <h2><b>Profile</b></h2>
+        
+        
+            <hr>
+          </div>
+        
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+            <div>
+                <label for="username"><b>Username:</b></label>
+                <input type="text" id="username" formControlName="username">
+                <small *ngIf="passwordForm.get('username')?.dirty && passwordForm.get('username')?.hasError('required')"
+                    class="text-danger">
+                    *Username is required
+                </small>
+            </div>
+            <div>
+                <label for="oldPassword"><b>Old Password:</b></label>
+                <input type="password" id="oldPassword" formControlName="oldPassword">
+                <small
+                    *ngIf="passwordForm.get('oldPassword')?.dirty && passwordForm.get('oldPassword')?.hasError('required')"
+                    class="text-danger">
+                    *Old Password is required
+                </small>
+            </div>
+            <div>
+                <label for="newPassword"><b>New Password:</b></label>
+                <input type="password" id="newPassword" formControlName="newPassword">
+                <small
+                    *ngIf="passwordForm.get('newPassword')?.dirty && passwordForm.get('newPassword')?.hasError('required')"
+                    class="text-danger">
+                    *New Password is required
+                </small>
+            </div>
+            <button type="submit" [disabled]="!passwordForm.valid">Update Password</button>
+            <button class="btn btn-primary ms-auto" routerLink="/admin">Back to DashBoard</button>
+
+        </form>
+    </div>
+
+</body>
+
+</html>
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-brand">
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+            style="padding-right: 10px;">
+            <span class=" navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/cust-profile"><i class="fa fa-user">
+                            PROFILE
+                        </i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/cust-poli"><i class="fa fa-file-text">
+                            POLICY
+                        </i></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/admin-claims"><i class="fa fa-clipboard"> CLAIMS
+                        </i></a>
+                </li> <br>
+
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/query"><i class="fa fa-question"> QUERY </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/documents"><i class="fa fa-folder"> DOCUMENTS </i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/customer-plans"><i class="fa fa-list-alt"> PLANS </i>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+    
+
+<div class="row">
+    
+    <div class="col-md-6">
+        
+<div class="container">
+ 
+     <div class="profile"><img src="../assets/user.png"alt=""> </div>
+    <table class="table table-responsive-md">
+        <tbody>
+            <tr>
+                <td>First Name</td>
+                <td></td>
+            
+            </tr>
+            <tr>
+                <td>Last Name</td>
+            </tr>
+
+        </tbody>
+       
+        <div  class="col-12 mt-2">
+            <button class="btn btn-danger submit" routerLink="/auth/update-password">Change Password</button>
+        </div>
+     
+    </table>
+</div>
+</div>
+
+</div> -->
+
+

@@ -1,0 +1,91 @@
+<app-customer-header></app-customer-header>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="container">
+            <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+                <div>
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" id="username" formControlName="username">
+                </div>
+                <div>
+                    <label for="oldPassword" class="form-label">Old Password:</label>
+                    <input type="password" id="oldPassword" formControlName="oldPassword">
+                </div>
+                <div>
+                    <label for="newPassword" class="form-label">New Password:</label>
+                    <input type="password" id="newPassword" formControlName="newPassword">
+                </div>
+                <button type="submit" [disabled]="!passwordForm.valid">Update Password</button>
+    
+                <button class="btn btn-primary " routerLink="/customer">Back to DashBoard</button>
+    
+            </form>
+        </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+            <h4><b> Update-Profile</b></h4>
+            <table class="table table-responsive-md">
+              <tbody>
+                <tr>
+                  <td>First Name</td>
+                  <td>{{ custProfile.custFirstName }}</td>
+                </tr>
+                <tr>
+                  <td>Last Name</td>
+                  <td>{{ custProfile.custLastName }}</td>
+                </tr>
+                <tr>
+                  <td>City</td>
+                  <td>{{custProfile.city}}</td>
+                </tr>
+                <tr>
+                  <td>Mobile No</td>
+                  <td>
+                    <div *ngIf="!isEdit">{{ custProfile.custPhoneNumber }}</div>
+                    <div *ngIf="isEdit">
+                      <input class="table-input" type="string" [(ngModel)]="custProfile.custPhoneNumber" />
+                      <span class="text-danger" *ngIf="validateField(custProfile.custPhoneNumber)">*required</span>
+                      <span class="text-danger" *ngIf="validatePhone(custProfile.custPhoneNumber)">*Invalid</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>
+                    <div *ngIf="!isEdit">{{ custProfile.custEmail}}</div>
+                    <div *ngIf="isEdit">
+                      <input class="table-input" type="email" [(ngModel)]="custProfile.custEmail" />
+                      <span class="text-danger" *ngIf="validateField(custProfile.custEmail)">*required</span>
+                      <span class="text-danger" *ngIf="validateEmail(custProfile.custEmail)">*Invalid</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          
+            <div *ngIf="!isEdit" class="col-12 mt-2">
+                <button class="submit" (click)="onEdit()">Edit Profile</button>
+              </div>
+            
+              <div *ngIf="isEdit" class="col-12 mt-2">
+                <button class="submit" (click)="updateProfile()">Update Profile</button>
+              </div>
+        </div>
+    </div>
+      </div>
+       
+    </div>
+
+    
+      
+
+      
+
+   
+
+
+

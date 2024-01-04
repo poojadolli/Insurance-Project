@@ -1,0 +1,202 @@
+.container-fluid {
+    background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+    background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      padding: 90px;
+      font-family: 'Arial', sans-serif;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+  
+  }
+.hidden-file-input {
+    display: none;
+}
+h2 {
+    text-align: center; /* Ensures the text is centered within its container */
+    margin-top: -90px;
+  }
+/* Style for the "Select PDF File" button */
+.select-button {
+    background-color: #007bff;
+    /* Primary button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Style for the "Upload PDF" button */
+.upload-button {
+    background-color: #28a745;
+    /* Success button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Style for small buttons */
+.small-button {
+    font-size: 12px;
+    /* Adjust the font size to make the button smaller */
+}
+
+body {
+    margin-top: 20px;
+    background: #fbfcfd;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+
+
+.content {
+    padding-top: 60px;
+    /* Adjust this value to match your header height */
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: large;
+}
+
+.h1 {
+    font-family: 'Courier New', Courier, monospace
+}
+
+.navbar-brand,
+.nav-link {
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item .dropdown-menu .dropdown-item {
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .dropdown-toggle {
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+    font-weight: bold;
+}
+
+.container {
+    margin-right: 90px;
+    align-items: center;
+}
+
+.logout {
+    display: block;
+    justify-content: center;
+    margin-top: 20px;
+    /* Adjust as needed */
+}
+
+
+p {
+    text-align: center;
+    text-transform: uppercase;
+    /* Convert to uppercase */
+    font-weight: bold;
+    /* Bold text */
+    font-size: 1.8em;
+    /* Medium size */
+}
+
+.order-card {
+    color: #fff;
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg, #4099ff, #73b4ff);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg, #FFB64D, #ffcb80);
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg, #FF5370, #ff869a);
+}
+
+.bg-c-purple {
+    background: linear-gradient(45deg, #d164cf, #f9b4e8);
+}
+
+.bg-c-red {
+    background: linear-gradient(45deg, #e94242, #e2a49e);
+}
+
+.bg-c-orange {
+    background: linear-gradient(45deg, #e9d370, #f7da04);
+}
+
+.bg-c-grey {
+    background: linear-gradient(45deg, #393a39, #8c8e8c);
+}
+
+
+.logout {
+    display: block;
+    justify-content: center;
+    margin-top: 20px;
+    /* Adjust as needed */
+}
+
+
+p {
+    font-family: cursive;
+    text-align: center;
+    text-transform: uppercase;
+    /* Convert to uppercase */
+    font-weight: bold;
+    /* Bold text */
+    font-size: 1.8em;
+    /* Medium size */
+}
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    border: none;
+    margin-bottom: 30px;
+    margin-left: 60px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}

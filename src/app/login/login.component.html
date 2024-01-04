@@ -1,0 +1,54 @@
+<app-header></app-header>
+<body id="LoginForm">
+    <div class="container">
+
+        <div class="login">
+            <div class="main-div">
+
+                <h2 class=" mb-3 text-center">Login</h2>
+
+
+                <form [formGroup]="LoginForm">
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" id="inputName" placeholder="Username*"
+                            formControlName="userName">
+                        <small
+                            *ngIf="LoginForm.get('userName')?.dirty && LoginForm.get('userName')?.hasError('required')"
+                            class="text-danger">
+                            *Username is requried
+                        </small>
+                    </div>
+
+                    <div class="form-group mb-3 ">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Password*"
+                            formControlName="password">
+                        <small
+                            *ngIf="LoginForm.get('password')?.dirty && LoginForm.get('password')?.hasError('required')"
+                            class="text-danger">
+                            *Password is requried
+                        </small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <select  class="form-control" formControlName="role">
+
+                            <option value="0" selected disabled> Select role*</option>
+                            <option value=1>Admin</option>
+                            <option value=2>Customer</option>
+                            <option value=4>Employee</option>
+                            <option value=3>Agent</option>
+                        </select>
+                        <small
+                        *ngIf="LoginForm.get('role')?.dirty && LoginForm.get('role')?.hasError('required')"
+                        class="text-danger">
+                        *Role is requried
+                    </small>
+                    </div>
+                    <div class="text-center">
+                    <button type="submit" class="btn btn-primary" (click)="customerLogin()">Login</button>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>

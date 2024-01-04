@@ -1,0 +1,116 @@
+<app-emp-header></app-emp-header>
+<div class="container-fluid">
+
+<div class="col-md-12">
+    <h2><b>Documents</b></h2>
+    <button class="btn btn-danger ms-auto" routerLink="/emp">Back to dashboard</button>
+<hr>
+
+    <div class="container">
+        <div class="row">
+           
+        </div>
+        <table id="employeeTable" class="table table-light table-responsive-md table-hover">
+            <thead>
+                <tr>
+
+                    <th scope="col">Document Id</th>
+                    <th scope="col">Document name</th>
+                    <th scope="col">More</th>
+
+                    <th scope="col">Action</th>
+                    <th scope="col">Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let doc of employeeDocuments; let i = index">
+                   
+                    <td>
+                        {{doc.documentId}}
+                    </td>
+                    <td>
+                        {{doc.documentName}}
+
+                    </td>
+
+                    <td>
+
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            data-bs-target="#policyDetailsModal" (click)="fetchCustomerDetails(doc.custId)">
+                            Details
+                        </button>
+
+                    </td>
+                    
+
+                    <td>
+                        <div *ngIf="!doc.status">
+                            <button class="btn btn-primary" (click)="updateDocumentStatus(doc)">Approve</button>
+                        </div>
+                        <div *ngIf="doc.status">
+                            <button type="button" class="btn btn-success">Approved</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" (click)="downloadDocument(doc)">Download</button>
+                    </td>
+
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+   
+        
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination justify-content-center">
+                <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                    <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                    <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                        }}</a>
+                </li>
+                <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                    <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    </div>
+</div> 
+    <div class="modal fade" id="policyDetailsModal" tabindex="-1" role="dialog"
+        aria-labelledby="policyDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="policyDetailsModalLabel">Customer Details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div *ngIf="customer">
+
+                        <p><strong>Customer Id:</strong> {{customer.custId}}</p>
+                        <p><strong>First name:</strong>{{customer.custFirstName}}</p>
+                        <p><strong>Last name:</strong>{{customer.custLastName}}</p>
+                        <p><strong>Email:</strong> {{customer.custEmail}}</p>
+                        <p><strong>Phone:</strong> {{customer.custPhoneNumber}}</p>
+                        <p><strong>State:</strong> {{customer.state}}</p>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+

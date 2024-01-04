@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-brand">
+         
+            <a class="nav-link active " aria-current="page" routerLink="/">   E-Insurance 
+            </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+            style="padding-right: 10px;">
+            <span class=" navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/agent-profile"><i class="fa fa-user">
+                            PROFILE
+                        </i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/agent-cust"><i class="fa fa-users"> CUSTOMERS </i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/agents-plans"><i class="fa fa-question">
+                             BUY-POLICY
+                        </i></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/agentcommtable"><i class="fa fa-money"> COMMISSION
+                        </i></a>
+                </li> <br>
+
+                <li>
+                   
+                        <button class="btn btn-danger" routerLink="/" data-bs-toggle="modal" data-bs-target="#logout"
+                            type="submit">Log-Out</button>
+                    
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

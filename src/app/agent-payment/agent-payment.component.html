@@ -1,0 +1,153 @@
+<app-customer-header></app-customer-header>
+<div class="col-md-6">
+    <div class="modal-body d-flex justify-content-center align-items-center">
+
+
+        <form [formGroup]="paymentDetail">
+            <h4><b>Payment</b></h4>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="paymentType" class="form-label">Payment Type</label>
+                        <select class="form-control" formControlName="paymentType" id="paymentType"
+                            aria-describedby="emailHelp">
+                            <option value="credit-card">Credit Card</option>
+                            <option value="debit-card">Debit Card</option>
+                            <option value="bank-transfer">Bank Transfer</option>
+                            <!-- Add more payment types as needed -->
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                  
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Amount</label>
+                            <input type="text" class="form-control" formControlName="amount" id="amount"
+                                > 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+              
+                <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" formControlName="date" id="date" >
+                </div>
+            </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Tax</label>
+                        <input type="text" class="form-control" formControlName="tax" id="tax"
+                          >
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">CardHolderName</label>
+                <input type="text" class="form-control" formControlName="cardHolderName" id="cardHolderName" aria-describedby="emailHelp">
+                <small  *ngIf="paymentDetail.get('cardHolderName')?.dirty && paymentDetail.get('cardHolderName')?.hasError('required')" class="text-danger"> 
+                  *Card holder is requried
+           </small>
+           
+     <small
+     *ngIf="
+       paymentDetail.get('cardHolderName')?.dirty &&
+       paymentDetail
+         .get('cardHolderName')
+         ?.hasError('onlyCharacters')
+     "
+     class="text-danger"
+   > *{{
+    paymentDetail
+    .get("cardHolderName")
+    ?.getError("onlyCharacters").message
+  }}
+     </small>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">CVVNo</label>
+                <input type="text" class="form-control" formControlName="cvvNo" id="cvvNo" aria-describedby="emailHelp">
+                <small  *ngIf="paymentDetail.get('cvvNo')?.dirty && paymentDetail.get('cvvNo')?.hasError('required')" class="text-danger"> 
+                  *CVVNo is requried
+           </small>
+           
+     <small
+     *ngIf="
+       paymentDetail.get('cvvNo')?.dirty &&
+       paymentDetail
+         .get('cvvNo')
+         ?.hasError('min')
+     "
+     class="text-danger"
+   > *{{
+    paymentDetail
+    .get("cvvNo")
+    ?.getError("min").message
+  }}
+     </small>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">CardNumber</label>
+                <input type="text" class="form-control" formControlName="cardNumber" id="cardNumber" aria-describedby="emailHelp">
+                <small  *ngIf="paymentDetail.get('cardNumber')?.dirty && paymentDetail.get('cardNumber')?.hasError('required')" class="text-danger"> 
+                  *CardNumer is requried
+           </small>
+           
+     <small
+     *ngIf="
+       paymentDetail.get('cardNumber')?.dirty &&
+       paymentDetail
+         .get('cardNumber')
+         ?.hasError('min')
+     "
+     class="text-danger"
+   > *{{
+    paymentDetail
+    .get("cardNumber")
+    ?.getError("min").message
+  }}
+     </small>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">ExpiryDate</label>
+                <input type="date" class="form-control" formControlName="expiryDate" id="expiryDate" aria-describedby="emailHelp">
+                <small  *ngIf="paymentDetail.get('expiryDate')?.dirty && paymentDetail.get('expiryDate')?.hasError('required')" class="text-danger"> 
+                  *ExpiryDate is requried
+           </small>
+              </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Total Payment</label>
+                        <input type="text" class="form-control" formControlName="totalPayment" id="totalPayment"
+                           >
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Policy Number</label>
+                        <input type="text" class="form-control" formControlName="policyNumebr" id="policyNumebr"
+                            aria-describedby="emailHelp">
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-success" 
+                        (click)="addPayment()">Add
+                        Payment</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+   

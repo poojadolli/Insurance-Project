@@ -1,0 +1,76 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid"> 
+
+  <div class="col-md-12">
+    <h2><b>Agents</b></h2>
+    <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+  </div>
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="pagination-controls ms-4 mb-3 pt-3">
+        <!-- Other pagination elements -->
+        <label for="pageSizeSelect"><b>Page size:</b></label>
+        <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+          <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+        </select>
+        <div class="search-container">
+          <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery" (keyup)="onSearch()"
+            placeholder="Search" />
+
+        </div>
+      </div>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Agent Id</th>
+          <th scope="col">First name</th>
+          <th scope="col">Last name</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Qualification</th>
+          <th scope="col">Email</th>
+          <th scope="col">Status</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let agent of agentList">
+          <td>{{agent.agentId}}</td>
+          <td>{{agent.agentFirstName}}</td>
+          <td>{{agent.agentLastName}}</td>
+          <td>{{agent.phoneNumber}}</td>
+          <td>{{agent.qualification}}</td>
+          <td>{{agent.email}}</td>
+          <td>
+            <p [ngClass]="{'text-success': agent.status, 'text-danger': !agent.status}">
+              {{ agent.status ? 'Active' : 'Inactive' }}
+
+            </p>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <nav aria-label="Page navigation example ">
+      <ul class="pagination justify-content-center">
+        <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+          <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+          <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+          <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

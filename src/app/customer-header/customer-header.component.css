@@ -1,0 +1,9 @@
+
+.navbar-nav .nav-item .dropdown-menu .dropdown-item {
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-item .dropdown-toggle {
+    text-transform: uppercase;
+}
+

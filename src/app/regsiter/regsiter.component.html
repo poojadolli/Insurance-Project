@@ -1,0 +1,208 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="card" style="background-color: #f0f0f0; max-width: 800px; margin: 0 auto;">
+        <div class="card-header" style="background-color: #007bff; color: #fff;">
+            <h5 class="card-title">Register</h5>
+        </div>
+        <div class="card-body">
+            <form *ngIf="custDetail" [formGroup]="custDetail">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="custFirstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" formControlName="custFirstName" id="custFirstName"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('custFirstName')?.dirty && custDetail.get('custFirstName')?.hasError('required')"
+                                class="text-danger">
+                                *CustFirstname is requried
+                            </small>
+                            <small *ngIf="
+                               custDetail.get('custFirstName')?.dirty &&
+                               custDetail
+                                 .get('custFirstName')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("custFirstName")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="custLastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" formControlName="custLastName" id="custLastName"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('custLastName')?.dirty && custDetail.get('custLastName')?.hasError('required')"
+                                class="text-danger">
+                                *CustLastname is requried
+                            </small>
+                            <small *ngIf="
+                               custDetail.get('custLastName')?.dirty &&
+                               custDetail
+                                 .get('custLastName')
+                                 ?.hasError('onlyCharacters')
+                             " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("custLastName")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+                    </div>
+                </div>
+<div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="custEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" formControlName="custEmail" id="custEmail"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('custEmail')?.dirty && custDetail.get('custEmail')?.hasError('email')"
+                                class="text-danger">
+                                *Email is requried
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="custPhoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" formControlName="custPhoneNumber"
+                                id="custPhoneNumber" aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('custPhoneNumber')?.dirty && custDetail.get('custPhoneNumber')?.hasError('required')"
+                                class="text-danger">
+                                *phoneNumber is requried
+                            </small>
+                            <small *ngIf="
+                               custDetail.get('custPhoneNumber')?.dirty &&
+                               custDetail
+                                 .get('custPhoneNumber')
+                                 ?.hasError('phoneValidate')
+                             " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("custPhoneNumber")
+                                ?.getError("phoneValidate").message
+                                }}</small>
+     
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="status" class="form-label">Status</label>
+                            <input type="text" class="form-control" formControlName="status" id="status"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                            <div *ngIf="custDetail.get('status')?.hasError('required')" class="text-danger">Status is
+                                required.</div>
+                        </div>
+                    </div> -->
+                </div>
+<div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" class="form-control" formControlName="state" id="state"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('state')?.dirty && custDetail.get('state')?.hasError('required')"
+                                class="text-danger">
+                                *State is requried
+                            </small>
+                            <small *ngIf="
+                           custDetail.get('state')?.dirty &&
+                           custDetail
+                             .get('state')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("state")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" formControlName="city" id="city"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small *ngIf="custDetail.get('city')?.dirty && custDetail.get('city')?.hasError('required')"
+                                class="text-danger">
+                                *City is requried
+                            </small>
+                            <small *ngIf="
+                           custDetail.get('city')?.dirty &&
+                           custDetail
+                             .get('city')
+                             ?.hasError('onlyCharacters')
+                         " class="text-danger">
+                                *{{
+                                custDetail
+                                .get("city")
+                                ?.getError("onlyCharacters").message
+                                }}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="userName" class="form-label">UserName</label>
+                            <input type="text" class="form-control" formControlName="userName" id="userName"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('userName')?.dirty && custDetail.get('userName')?.hasError('required')"
+                                class="text-danger">
+                                *UserName is requried
+                            </small>
+                            <small
+                                *ngIf="custDetail.get('userName')?.dirty && custDetail.get('userName')?.hasError('passwordValidator')"
+                                class="text-danger">
+                                *{{
+                                custDetail
+                                .get("userName")
+                                ?.getError("passwordValidator").message
+                                }}
+                            </small>
+                        </div>
+                    </div>
+<div class="col-md-6">
+                        <div class="mb-3" style="margin-bottom: 10px;">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="text" class="form-control" formControlName="password" id="password"
+                                aria-describedby="emailHelp" style="max-width: 100%;">
+                                <small
+                                *ngIf="custDetail.get('password')?.dirty && custDetail.get('password')?.hasError('required')"
+                                class="text-danger">
+                                *Password is requried
+                            </small>
+                            <small
+                                *ngIf="custDetail.get('password')?.dirty && custDetail.get('password')?.hasError('passwordValidator')"
+                                class="text-danger">
+                                *{{
+                                custDetail
+                                .get("password")
+                                ?.getError("passwordValidator").message
+                                }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" (click)="addCustomer()">Register</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

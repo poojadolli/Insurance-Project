@@ -1,0 +1,142 @@
+
+
+.profile img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 30px;
+
+}
+
+.profile {
+    margin-left: 200px;
+
+    margin-right: auto;
+
+}
+
+
+
+.row .changePassword {
+    margin-top: 70px;
+    margin-left: auto;
+    width: 50px;
+
+}
+
+.container-with-buttons {
+    margin-top: 3rem;
+    /* Adjust the margin as needed */
+    padding: 1rem;
+    /* Adjust the padding as needed */
+    border: 1px solid #ddd;
+    /* Optional: Add a border for visibility */
+}
+
+.container-with-buttons button {
+    margin-top: 1rem;
+    /* Adjust the margin-top for the buttons as needed */
+}
+
+.submit {
+    width: 100px;
+    margin-right: 100px;
+}
+
+
+
+button.submit {
+    background-color: #3498db;
+    /* Background color for the buttons */
+    color: #ffffff;
+    /* Text color for the buttons */
+    padding: 10px 20px;
+    /* Adjust padding to your preference */
+    border: none;
+    /* Remove button border */
+    border-radius: 5px;
+     width: 100%;
+    /* Add rounded corners */
+   
+}
+
+button.submit:hover {
+    background-color: #2980b9;
+    /* Change background color on hover */
+}
+
+input {
+    margin-bottom: 10px;
+    /* Add a gap between input elements */
+}
+
+
+.container-fluid {
+    background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 90px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+    margin-left: 70px;
+    margin-right: 70px;
+
+} 
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.text-danger {
+    color: red;
+    margin-top: 5px;
+    font-size: 14px;
+}

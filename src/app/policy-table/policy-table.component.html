@@ -1,0 +1,128 @@
+<app-admin-header></app-admin-header>
+<div class="container-fluid">
+  <div class="col-md-12">
+    <h2><b>Policy</b></h2>
+
+    <button class="btn btn-danger ms-auto" routerLink="/admin">Back to dashboard</button>
+
+    <hr>
+  </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Policy number</th>
+                <th scope="col">Issue date</th>
+                <th scope="col">Maturity date</th>
+                <th scope="col">Premium type</th>
+                <th scope="col">Premium amount</th>
+                <th scope="col">Installment</th>
+                <th scope="col">Sum assured</th>
+                <th scope="col">Agent</th>
+                <th scope="col">Scheme</th>
+                <th scope="col">Customer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let policy of policyList">
+                <td>{{policy.policyNumber}}</td>
+                <td>{{policy.issueDate| date : "dd-MM-YYYY"}}</td>
+                <td>{{policy.maturityDate| date : "dd-MM-YYYY"}}</td>
+                <td>{{policy.premiumType}}</td>
+                <td>&#x20B9;{{policy.premiumAmount}}</td>
+                <td>{{policy.installment}}</td>
+                <td>&#x20B9;{{policy.sumAssured}}</td>
+                <td>{{policy.agentId ? policy.agentId : 'Not Assigned'}}</td>
+
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#schemeDetailsModal" (click)="fetchCustomerDetails(policy.schemeId)">
+                        Details
+                    </button>
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#customerDetailsModal" (click)="fetchCustDetails(policy.customerID)">
+                        Details
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    <div class="modal fade" id="schemeDetailsModal" tabindex="-1" role="dialog"
+        aria-labelledby="schemeDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="schemeDetailsModalLabel">Scheme Details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="scheme">
+                        <p><strong>Scheme Id:</strong> {{ scheme.schemeId }}</p>
+                        <p><strong>Scheme name:</strong> {{ scheme.schemeName }}</p>
+                        <p><strong>Status:</strong> {{ scheme.status }}</p>
+                       
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="customerDetailsModal" tabindex="-1" role="dialog"
+        aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="cust">
+                        <p><strong>Customer Id:</strong> {{ cust.custId }}</p>
+                        <p><strong>Name:</strong> {{cust.custFirstName }}</p>
+                        <p><strong>City:</strong> {{ cust.state}}</p>
+                      
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="agentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="agentDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agentDetailsModalLabel">Agent Details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="agent">
+               
+                        <p><strong>Agent Id:</strong> {{ agent.agentId }}</p>
+                        <p><strong>Agent name:</strong> {{agent.agentFirstName }}</p>
+                        <p><strong>Email:</strong> {{agent.email}}</p>
+                        <p><strong>Phone:</strong> {{agent.phoneNumber}}</p>
+                           </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

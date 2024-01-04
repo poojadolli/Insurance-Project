@@ -1,0 +1,208 @@
+<app-agent-header></app-agent-header>
+<div class="container-fluid">
+<div class="col-md-12">
+  <h2> <b>Schemes</b></h2>
+  <button class="btn btn-danger ms-auto" routerLink="/agent">Back to dashboard</button>
+</div>
+
+<hr>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="pagination-controls ms-4 mb-3 pt-3">
+            <!-- Other pagination elements -->
+            <label for="pageSizeSelect">Page size:</label>
+            <select id="pageSizeSelect" class="form-control" (change)="onPageSizeChange($event)">
+                <option value="{{pageSize}}" *ngFor="let pageSize of pageSizes">{{pageSize}}</option>
+            </select>
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchQuery" [(ngModel)]="searchQuery"
+                    (keyup)="onSearch()" placeholder="Search" />
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Scheme Id</th>
+                <th scope="col">Scheme name</th>
+                <th scope="col">Status</th>
+                <th scope="col">More</th>
+                <th scope="col">Buy-Policy</th>
+               
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let scheme of schemeList.schemes">
+                <td>{{scheme.schemeId}}</td>
+                <td>{{scheme.schemeName}}</td>
+                <td>
+                    <div *ngIf="scheme.status">Active</div>
+                    <div *ngIf="!scheme.status">Inactive</div>
+                </td>
+
+                <td><button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                        data-bs-target="#viewDetail" (click)="getDetails(scheme)">Details</button></td>
+
+                <td><button type="button" class="btn btn-primary me-2" (click)="buyPolicy(scheme)">Buy-Now</button></td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Other pagination elements -->
+<div>
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination justify-content-center">
+            <li class="page-item text-center ms-1" *ngIf="currentPage > 1">
+                <a class="page-link" (click)="changePage(currentPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item text-center ms-1" *ngFor="let page of pageNumbers">
+                <a class="page-link" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">{{ page
+                    }}</a>
+            </li>
+            <li class="page-item text-center ms-1" *ngIf="currentPage < pageNumbers.length">
+                <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
+</div>
+
+
+<!--  view  sceme detail-->
+<div class="modal fade" id="viewDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: antiquewhite;">
+
+                <h3 class="modal-title fs-5" id="exampleModalLabel">Scheme details</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <br>
+                <div *ngIf="schemeDetails">
+                    <table>
+                        <tr *ngIf="schemeDetails.description">
+
+                        <tr>
+                            <td>Description: </td>
+                            <td> {{schemeDetails.description}}</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum amount: </td>
+                            <td>{{schemeDetails.minimumAmount}}</td>
+                        </tr>
+                        <tr>
+                            <td>Maximum amount: </td>
+                            <td>{{schemeDetails.maximumAmount}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Minimum invest time: </td>
+                            <td>{{schemeDetails.minimumInvestTime}}</td>
+                        </tr>
+                        <tr>
+                            <td>Maximum invest time: </td>
+                            <td>{{schemeDetails.maximumInvestTime}}</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum age: </td>
+                            <td>{{schemeDetails.minimumAge}}</td>
+                        </tr>
+                        <tr>
+                            <td>Maximum age: </td>
+                            <td>{{schemeDetails.maximumAge}}</td>
+                        </tr>
+                        <tr>
+                            <td>Profit ratio: </td>
+                            <td>{{schemeDetails.profitRatio}}</td>
+                        </tr>
+                        <tr>
+                            <td>Registration commission ratio: </td>
+                            <td>{{schemeDetails.registrationCommRatio}}</td>
+                        </tr>
+                        <tr>
+                            <td>Installment commission ratio: </td>
+                            <td>{{schemeDetails.installmentCommRatio}}</td>
+                        </tr>
+                        <!-- Add similar checks for other properties -->
+                    </table>
+                </div>
+
+                <br>
+                <br>
+                <div class="mb-3">
+                    <div class="modal-footer" style="background-color: antiquewhite;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- calculateeeee--->
+
+<div class="modal fade" id="viewCalculate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: antiquewhite;">
+
+                <h3 class="modal-title fs-5" id="exampleModalLabel"><b>Calculate your
+                        plan</b></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+
+            <p>Scheme name: {{ selectedSchemeName }}</p>
+            <label for="investTime">Minimum invest time (in months):</label>
+            <input type="number" id="investTime" [(ngModel)]="investTime" />
+
+            <label for="investAmount">Invest amount:</label>
+            <input type="number" id="investAmount" [(ngModel)]="investAmount" />
+
+            <label for="premiumType">Premium type:</label>
+            <select id="premiumType" [(ngModel)]="premiumType">
+                <option value="yearly">Yearly</option>
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+            </select>
+
+            <label for="profitRatio">Profit ratio (as a decimal):</label>
+            <input type="number" step="0.01" id="profitRatio" [(ngModel)]="profitRatio" />
+
+            <div class="mb-3">
+                <div class="modal-footer" style="background-color: antiquewhite;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"
+                        (click)="calculateTotalSumAndPremiumAmount()">Calculate</button>
+                </div>
+
+                <div class="modal-body">
+                    ... other details ...
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p><b>Sum assured:{{totalSum}}</b></p>
+                            <p><b>Premium amount: {{premiumAmount}}</b></p>
+                        </div>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Buy-Now</button>
+
+                    </div>
+                    

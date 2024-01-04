@@ -1,0 +1,65 @@
+.container-fluid {
+    background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699747200&semt=sph.jpg");
+    background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      padding: 90px;
+      font-family: 'Arial', sans-serif;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+  
+  }
+.pagination-controls {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-controls label {
+    margin-right: 10px;
+}
+
+.pagination-controls select {
+    width: 60px;
+    /* Adjust width as needed */
+}
+
+.search-container {
+    margin-left: auto;
+    margin-right: 30px;
+    width: 300px;
+    height: 42px;
+    border-radius: 10px;
+}
+
+
+h2 {
+    text-align: center; /* Ensures the text is centered within its container */
+    margin-top: -90px;
+  }
+
+
+.close {
+    font-weight: 700;
+    font-size: 23px;
+    width: 50px;
+    border: none;
+
+}
+
+
+.btn btn-outline-danger {
+    align-items: left;
+}
+
+.custom-heading {
+    font-size: 30px;
+    /* Adjust the font size as needed */
+    font-weight: bold;
+    color: #FF0000;
+    font-family: cursive;
+    text-align: center;
+    /* Adjust the font weight as needed */
+    /* Add other styles you want for the heading */
+}

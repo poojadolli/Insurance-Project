@@ -1,0 +1,161 @@
+<app-customer-header></app-customer-header>
+<div class="container-fluid">
+
+  <div class="col-md-12">
+    <h2><b>Policy Details</b></h2>
+    <button class="btn btn-danger ms-auto" routerLink="/customer">Back to dashboard</button>
+    <hr>
+  </div>
+  <div class="container" class="text-center mt-3">
+    <div class="container">
+      <h5 class="mt-3">Customer Details</h5>
+      <table class="table table-hover table-responsive-md table-light mt-3">
+        <thead>
+          <tr>
+            <th>Customer name</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Email</th>
+            <th colspan="2">Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {{ custList.custFirstName }}
+              {{ custList.custLastName }}
+            </td>
+            <td>
+              {{ custList.state }}
+            </td>
+            <td>
+              {{ custList.city }}
+            </td>
+            <td>
+              {{ custList.custEmail }}
+            </td>
+            <td>
+              {{ custList.custPhoneNumber }}
+            </td>
+            <td>
+              {{ custList.agentId }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="container mt-3">
+      <h5 class="mt-3">Policy Details</h5>
+      <table class="table table-hover table-responsive-md table-light mt-3">
+        <thead>
+          <tr>
+            <th>Policy number</th>
+            <th>Scheme name</th>
+            <th>Issued date</th>
+            <th>Maturity date</th>
+            <th>Premium mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {{ policyList.policyNumber }}
+            </td>
+            <td>
+              {{ schemeList.schemeName }}
+            </td>
+            <td>
+              {{ policyList.issueDate | date : "dd-MM-YYYY" }}
+            </td>
+            <td>
+              {{ policyList.maturityDate | date : "dd-MM-YYYY" }}
+            </td>
+            <td>
+              {{ policyList.premiumType }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="container mt-3">
+      <h5 class="mt-3">Premium-Details</h5>
+      <table class="table table-hover table-responsive-md table-light mt-3">
+        <thead>
+          <tr>
+            <th>Premium amount</th>
+
+            <th>Sum assured</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              &#x20B9; {{ policyList.premiumAmount }}
+            </td>
+
+            <td>
+              &#x20B9; {{ policyList.sumAssured }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="container mt-3">
+      <h5 class="mt-3">Payment Details</h5>
+      <table class="table table-hover table-responsive-md table-light mt-3 table-striped">
+
+        <thead>
+          <tr>
+            <th>Installment number</th>
+            <th>Installment amount</th>
+            <th>Due date</th>
+            <th>Action</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emi of installment; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>&#x20B9;{{ policyList.premiumAmount }}</td>
+            <td>{{ calculateDueDate(i) | date : "dd-MM-YYYY" }}</td>
+            <td>
+              <div *ngIf="i == policyList.payments.length">
+                <button class="btn btn-primary" (click)="payPremium(i)">
+                  Pay Premium
+                </button>
+              </div>
+              <div *ngIf="i <  policyList.payments.length">
+                <h6>Paid</h6>
+              </div>
+              <div *ngIf="i >  policyList.payments.length">
+                <button class="btn btn-secondary" >Pay
+                  Premium</button>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="i <  policyList.payments.length">
+                <button class="btn btn-success" (click)="downloadReceipt(i)">
+                  Reciept
+                </button>
+              </div>
+              <div *ngIf="i >=  policyList.payments.length"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+ 
+<div class="container mt-3 mb-3" >
+ 
+    <button class="btn btn-secondary" *ngIf="installment.length==policyList.payments.length && policyList.claims.length==0" (click)="ClaimPolicy()">
+      Claim Policy
+    </button>
+    <button class="btn btn-secondary" *ngIf=" policyList.claims.length>0"  disabled>
+      Claimed
+    </button>
+  </div>
+ 
+</div>
+

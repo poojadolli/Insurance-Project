@@ -1,0 +1,114 @@
+<app-customer-header></app-customer-header>
+
+<div class="container-fluid">
+<div class="col-md-12">
+  <h2> <b>Insurance Policies</b></h2>
+  <button class="btn btn-danger ms-auto" routerLink="/customer">Back to dashboard</button>
+ <hr>
+</div>
+
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Policy number</th>
+      <th scope="col">Issue date</th>
+      <th scope="col">Maturity date</th>
+      <th scope="col">Premium type</th>
+      <th scope="col">Premium amount</th>
+      <th scope="col">Sum assured</th>  
+      <th scope="col">More</th>
+      <th scope="col" colspan="3">Action</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="policyList.length>0">
+    <tr *ngFor="let policy of policyList">
+      <td>{{policy.policyNumber}}</td>
+      <td>{{policy.issueDate|date:'dd-MM-YYYY'}}</td>
+      <td>{{policy.maturityDate|date:'dd-MM-YYYY'}}</td>
+      <td>{{policy.premiumType}}</td>
+      <td>&#x20B9;{{policy?.premiumAmount}}</td>
+      <td>&#x20B9;{{policy.sumAssured}}</td>
+      <td>
+        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#policyDetailsModal"
+          (click)="fetchCustomerDetails(policy.customerID)">
+          Details
+        </button>
+      </td>
+     
+      <td>
+
+        <button type="button" class="btn btn-danger" [routerLink]="['/cust-premium', policy.policyNumber]">View
+          Premium</button>
+
+      </td>
+      <td>{{policy.installment}}</td>
+      <td>{{policy.schemeId}}</td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="policyList.length==0">
+    <tr class="text-center">
+      <td colspan="8" >No data found</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<div class="modal fade" id="policyDetailsModal" tabindex="-1" role="dialog" aria-labelledby="policyDetailsModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="policyDetailsModalLabel">Customer details</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="customers">
+
+          <p><strong>Customer Id</strong> {{customers.custId}}</p>
+          <p><strong>First name:</strong>{{customers.custFirstName}}</p>
+          <p><strong>Last name:</strong>{{customers.custLastName}}</p>
+          <p><strong>Email:</strong> {{customers.custEmail}}</p>
+          <p><strong>Phone:</strong> {{customers.custPhoneNumber}}</p>
+          <p><strong>State:</strong> {{customers.state}}</p>
+          <p ><strong >City:</strong > {{customers.city}} </p>
+         
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="agentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="agentDetailsModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="agentDetailsModalLabel">Agent details</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="agents">
+
+          <p><strong>Agent Id:</strong> {{agents.agentId}}</p>
+          <p><strong>First name:</strong>{{agents.agentFirstName}}</p>
+          <p><strong>Last name:</strong>{{agents.agentLastName}}</p>
+          <p><strong>Email:</strong> {{agents.email}}</p>
+          <p><strong>Phone:</strong> {{agents.phoneNumber}}</p>
+          <p><strong>State:</strong> {{agents.qualification}}</p>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
